@@ -1,0 +1,283 @@
+/* ==========================================================================
+   The Clare Echo — article + section pages, then all responsive rules
+   ========================================================================== */
+
+/* ---------- reading progress ---------- */
+.progress{position:fixed;top:0;left:0;height:3px;width:100%;z-index:80;pointer-events:none;
+  transform:scaleX(0);transform-origin:0 50%;background:var(--blue);}
+
+/* ---------- article ----------
+   The sidebar runs the full height of the main column, from the kicker down
+   — one grid (.art-top), not a narrower reading column bolted below a
+   full-width head and hero. That also means the hero now sits in a column
+   that's giving up 300px + a gap to the sidebar, so it prints noticeably
+   smaller than a full-width hero would. */
+.crumb{display:flex;align-items:center;gap:8px;padding-block:18px 0;font-size:12px;color:var(--slate);font-weight:500;}
+.crumb a:hover{color:var(--blue);}
+.crumb svg{width:11px;height:11px;fill:none;stroke:currentColor;stroke-width:2.6;stroke-linecap:round;stroke-linejoin:round;opacity:.55;}
+.crumb .cur{color:var(--ink-soft);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:46ch;}
+
+.art-top{display:grid;grid-template-columns:minmax(0,1fr) 300px;gap:clamp(28px,4vw,56px);
+  padding-block:10px clamp(34px,4.6vw,52px);align-items:start;}
+.art-main{min-width:0;}
+
+.art-head{padding-bottom:0;}
+.art-head .kicker{margin-bottom:15px;}
+.art-head h1{font-size:clamp(27px,3.6vw,44px);letter-spacing:-.033em;line-height:1.05;}
+.art-stand{margin-top:18px;font-size:clamp(16px,1.3vw,18px);line-height:1.5;color:var(--slate-dark);
+  letter-spacing:-.014em;max-width:60ch;}
+.art-byline{display:flex;flex-wrap:wrap;align-items:center;gap:14px;margin-top:22px;padding-top:20px;border-top:1px solid var(--line);}
+.art-av{width:44px;height:44px;border-radius:50%;background:var(--blue-wash);color:var(--blue);
+  display:grid;place-items:center;font-weight:800;font-size:14.5px;letter-spacing:-.03em;flex:0 0 auto;
+  border:1px solid rgba(0,128,255,.2);}
+.art-byline .who{font-size:14.5px;font-weight:700;letter-spacing:-.022em;}
+.art-byline .when{margin-top:2px;font-size:12.5px;color:var(--slate);}
+.art-share{margin-left:auto;display:flex;gap:7px;}
+.art-share button,.art-share a{width:38px;height:38px;border-radius:50%;border:1px solid var(--line);
+  display:grid;place-items:center;color:var(--slate-dark);
+  transition:border-color .18s var(--ease),color .18s var(--ease),background .18s var(--ease);}
+.art-share button:hover,.art-share a:hover{border-color:var(--blue);color:var(--blue);background:var(--blue-wash);}
+.art-share svg{width:16px;height:16px;fill:currentColor;}
+.art-share .stroke svg{fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;}
+
+.art-hero{margin:22px 0 0;}
+.art-hero .ph{border-radius:var(--rad);}
+.art-hero figcaption{margin-top:11px;font-size:12.5px;color:var(--slate);line-height:1.5;
+  padding-left:13px;border-left:2px solid var(--blue);letter-spacing:-.005em;}
+
+.art-main .prose{margin-top:26px;}
+.prose{max-width:70ch;font-size:17.5px;line-height:1.72;color:var(--ink-soft);letter-spacing:-.011em;}
+.prose > p + p{margin-top:1.15em;}
+.prose strong{font-weight:700;color:var(--ink);}
+.prose a{color:var(--blue);text-decoration:underline;text-underline-offset:2px;text-decoration-thickness:1.5px;}
+.prose h2{margin-top:1.8em;font-size:24px;letter-spacing:-.024em;color:var(--ink);}
+.prose h2 + p{margin-top:.7em;}
+.pull{margin-block:1.9em;padding:4px 0 4px 26px;border-left:3px solid var(--blue);}
+.pull p{font-size:clamp(20px,2.2vw,25px);font-weight:750;letter-spacing:-.024em;line-height:1.22;color:var(--ink);}
+.pull cite{display:block;margin-top:12px;font-style:normal;font-size:12px;font-weight:800;
+  letter-spacing:.09em;text-transform:uppercase;color:var(--slate);}
+
+.paywall{position:relative;margin-top:-140px;padding-top:140px;
+  background:linear-gradient(180deg,rgba(255,255,255,0),#fff 130px);}
+.paywall-card{border:1px solid var(--line);border-radius:var(--rad);padding:clamp(24px,3.4vw,36px);
+  background:var(--wash);text-align:center;}
+.paywall-card .badge-prem{margin-bottom:16px;}
+.paywall-card h2{font-size:clamp(21px,2.4vw,27px);letter-spacing:-.026em;}
+.paywall-card p{margin-top:12px;font-size:15px;color:var(--slate-dark);line-height:1.55;
+  max-width:44ch;margin-inline:auto;letter-spacing:-.01em;}
+.paywall-cta{margin-top:22px;display:flex;gap:11px;justify-content:center;flex-wrap:wrap;}
+.paywall-card .sm{margin-top:16px;font-size:12.5px;color:var(--slate);}
+.paywall-card .sm a{color:var(--blue);font-weight:600;}
+
+.aside{position:sticky;top:calc(var(--head-h) + 22px);display:grid;gap:34px;}
+.aside-block h3{font-size:11px;font-weight:800;letter-spacing:.11em;text-transform:uppercase;color:var(--slate);
+  padding-bottom:11px;margin-bottom:4px;border-bottom:2px solid var(--ink);}
+.mostread li{border-bottom:1px solid var(--line);}
+.mostread a{display:grid;grid-template-columns:auto 1fr;gap:13px;padding:14px 0;align-items:start;}
+.mostread .n{font-size:20px;font-weight:800;color:var(--line-strong);letter-spacing:-.05em;line-height:1;width:20px;
+  font-variant-numeric:tabular-nums;transition:color .18s var(--ease);}
+.mostread a:hover .n{color:var(--blue);}
+.mostread h4{font-size:14.5px;font-weight:650;letter-spacing:-.012em;line-height:1.3;margin:0;}
+.aside-promo{background:var(--ink);color:#fff;border-radius:var(--rad);padding:24px 22px;position:relative;overflow:hidden;}
+.aside-promo::before{content:'';position:absolute;inset:0;background:radial-gradient(420px 200px at 100% 0,rgba(0,128,255,.3),transparent 65%);}
+.aside-promo > *{position:relative;}
+.aside-promo h3{border:0;padding:0;margin-bottom:12px;color:rgba(255,255,255,.7);}
+.aside-promo p{font-size:19px;font-weight:750;letter-spacing:-.022em;line-height:1.2;}
+.aside-promo .sm{margin-top:10px;font-size:13px;font-weight:400;color:rgba(255,255,255,.6);line-height:1.5;letter-spacing:-.008em;}
+.aside-promo .btn{margin-top:18px;}
+
+.readnext{background:var(--wash);}
+.tags{display:flex;flex-wrap:wrap;gap:8px;margin-top:32px;padding-top:26px;border-top:1px solid var(--line);}
+.tags span{font-size:11px;font-weight:800;letter-spacing:.09em;text-transform:uppercase;color:var(--slate);align-self:center;margin-right:4px;}
+.tags a{font-size:13px;font-weight:600;padding:6px 13px;border-radius:999px;background:var(--wash);
+  border:1px solid var(--line);letter-spacing:-.012em;transition:border-color .18s var(--ease),color .18s var(--ease);}
+.tags a:hover{border-color:var(--blue);color:var(--blue);}
+
+/* ---------- section page ---------- */
+.sec-hero{border-bottom:1px solid var(--line);padding-block:clamp(28px,3.6vw,44px);}
+/* section pages carry just the title now — no kicker, no blurb — so the
+   band doesn't need the same vertical weight the fuller heroes get */
+.sec-hero--tight{padding-block:clamp(20px,2.6vw,30px);}
+.sec-hero--tight h1{font-size:clamp(30px,4.6vw,52px);}
+.sec-hero .kicker{margin-bottom:12px;}
+.sec-hero h1{font-size:clamp(34px,5.4vw,66px);letter-spacing:-.036em;line-height:1;}
+.sec-hero p{margin-top:16px;font-size:16.5px;color:var(--slate-dark);max-width:56ch;line-height:1.55;letter-spacing:-.012em;}
+.sec-chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:26px;}
+.sec-chips a{font-size:13px;font-weight:650;padding:8px 15px;border-radius:999px;border:1px solid var(--line);
+  letter-spacing:-.014em;transition:border-color .18s var(--ease),color .18s var(--ease),background .18s var(--ease);}
+.sec-chips a:hover{border-color:var(--blue);color:var(--blue);}
+.sec-chips a.is-active{background:var(--ink);border-color:var(--ink);color:#fff;}
+
+.sec-split{display:grid;grid-template-columns:minmax(0,1fr) 300px;gap:clamp(32px,4.6vw,58px);align-items:start;}
+.stream{display:grid;gap:0;}
+.stream .card-h{padding-block:26px;border-bottom:1px solid var(--line);}
+.stream .card-h:first-child{padding-top:0;}
+.stream .card-h{grid-template-columns:minmax(0,1fr) 232px;gap:26px;}
+.stream .card-h h3{font-size:clamp(19px,1.9vw,23px);letter-spacing:-.022em;}
+.stream .card-h .stand{margin-top:10px;font-size:14.5px;line-height:1.5;color:var(--slate-dark);letter-spacing:-.008em;}
+.loadmore{margin-top:34px;display:flex;justify-content:center;}
+.pagenav{margin-top:34px;display:flex;align-items:center;justify-content:center;gap:6px;}
+.pagenav a,.pagenav span{min-width:40px;height:40px;padding:0 12px;border-radius:var(--rad-sm);display:grid;place-items:center;
+  font-size:14px;font-weight:650;color:var(--slate-dark);transition:background .18s var(--ease),color .18s var(--ease);}
+.pagenav a:hover{background:var(--wash);color:var(--blue);}
+.pagenav .is-active{background:var(--ink);color:#fff;}
+.pagenav .gap{color:var(--line-strong);}
+.pagenav svg{width:13px;height:13px;fill:none;stroke:currentColor;stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round;}
+
+/* ---------- reveal ----------
+   Gated on .js: if the script never runs, the news is still on the page.
+   Nothing here may be the only thing making content visible. */
+@media (prefers-reduced-motion:no-preference){
+  .js .rv{opacity:0;transform:translateY(14px);}
+  .js .rv.is-in{opacity:1;transform:none;transition:opacity .6s var(--ease),transform .6s var(--ease);}
+}
+
+/* ==========================================================================
+   Responsive — single home for every breakpoint
+   ========================================================================== */
+
+@media (min-width:1160px){
+  .mast-tag{display:block;}
+}
+
+@media (max-width:1180px){
+  .home-top{grid-template-columns:minmax(0,1fr) 300px;}
+  .sport-grid{grid-template-columns:minmax(0,1.4fr) minmax(0,1fr);}
+  .sport-mc{grid-column:1 / -1;padding-top:28px;margin-top:28px;border-top:1px solid var(--line);}
+  .sport-mc::before{display:none;}
+  .pods{grid-template-columns:repeat(3,minmax(0,1fr));}
+  .pods-intro{grid-column:1 / -1;}
+  .pods-intro p{max-width:60ch;}
+  .foot-top{grid-template-columns:repeat(4,minmax(0,1fr));}
+  .foot-brand{grid-column:1 / -1;}
+  .foot-brand p{max-width:52ch;}
+}
+
+@media (max-width:1080px){
+  .brandbar .logo{--logo-h:24px;}
+  .secnav .wrap{gap:14px;}
+  .seclist a{padding:13px 11px;font-size:13.5px;}
+  /* sidebar drops below the well and its modules run side by side */
+  .home-top{grid-template-columns:minmax(0,1fr);}
+  .home-rail{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:22px;align-items:start;
+    padding-top:30px;margin-top:6px;border-top:1px solid var(--line);}
+  .railcard + .railcard,.adslot{margin-top:0;}
+  .rail-scroll{max-height:none;overflow:visible;padding-right:0;margin-right:0;}
+  .art-top,.sec-split{grid-template-columns:minmax(0,1fr);}
+  .aside{position:static;grid-template-columns:repeat(2,minmax(0,1fr));gap:30px;align-items:start;}
+  .prose{max-width:none;}
+}
+
+@media (max-width:900px){
+  .cards{grid-template-columns:repeat(2,minmax(0,1fr));gap:30px 22px;}
+  /* the well is full width by now, so a trio stays a trio — dropping to two
+     would strand the third card in an empty row */
+  .cards--3{grid-template-columns:repeat(3,minmax(0,1fr));}
+  .prem-grid{grid-template-columns:minmax(0,1fr);}
+  .prem-grid > * + *{padding-top:26px;margin-top:26px;border-top:1px solid rgba(255,255,255,.16);}
+  .prem-grid > * + *::before{display:none;}
+  .prem-top .btn{margin-left:0;}
+  .op-grid,.notice-grid{grid-template-columns:minmax(0,1fr);}
+  .op-grid > * + *,.notice-grid > * + *{padding-top:26px;margin-top:26px;border-top:1px solid var(--line);}
+  .op-grid > * + *::before,.notice-grid > * + *::before{display:none;}
+  .de{grid-template-columns:minmax(0,1fr);}
+  .de-stack{order:-1;min-height:0;padding-block:14px 26px;}
+  .de-paper{width:min(240px,62%);}
+  .de-ghost{width:min(240px,62%);}
+  /* the plancard's fixed minmax(0,400px) column has nowhere to go on a narrow
+     viewport — it was forcing the copy column down to its content minimum,
+     wrapping every word onto its own line */
+  .subs-grid{grid-template-columns:minmax(0,1fr);gap:32px;}
+  .plancard{max-width:420px;}
+  .nl-inner{grid-template-columns:minmax(0,1fr);}
+  /* Job Watch is the one link with nowhere else on the site to reach it, so
+     it's the first to go; Obituaries and E-Paper stay all the way down */
+  .util-links a:nth-child(3){display:none;}
+}
+
+@media (max-width:760px){
+  :root{--head-h:58px;}
+  .lead-hero{grid-template-columns:minmax(0,1fr);gap:18px;}
+  .lead-hero .ph{order:-1;}
+  .lead-hero h1{font-size:clamp(27px,6.4vw,36px);}
+  .home-rail{grid-template-columns:minmax(0,1fr);}
+  .sport-grid{grid-template-columns:minmax(0,1fr);}
+  .sport-list{padding-top:26px;margin-top:26px;border-top:1px solid var(--line);}
+  .sport-list::before{display:none;}
+  .pods{grid-template-columns:repeat(2,minmax(0,1fr));}
+  .foot-top{grid-template-columns:repeat(2,minmax(0,1fr));gap:28px;}
+  .aside{grid-template-columns:minmax(0,1fr);}
+  .stream .card-h{grid-template-columns:minmax(0,1fr) 148px;gap:18px;}
+  .art-share{margin-left:0;width:100%;}
+  .paywall{margin-top:-110px;padding-top:110px;}
+}
+
+@media (max-width:620px){
+  .util .wrap{height:34px;gap:14px;}
+  /* the date is the one thing here with no reader value worth the space —
+     Obituaries, E-Paper, Subscribe and Log in all stay, left to right */
+  .util-date{display:none;}
+  .util-links{gap:13px;}
+  .util-links a{font-size:10.5px;}
+  .mast-actions .btn--ghost{display:none;}
+  .cards{grid-template-columns:minmax(0,1fr);gap:0;}
+  .cards .card{padding-top:24px;margin-top:24px;border-top:1px solid var(--line);}
+  .cards .card:first-child{padding-top:0;margin-top:0;border-top:0;}
+  .cards--3{grid-template-columns:minmax(0,1fr);}
+  .lead-pair{grid-template-columns:minmax(0,1fr);gap:22px;}
+  .pods{grid-template-columns:minmax(0,1fr);}
+  .card-h{grid-template-columns:minmax(0,1fr) 104px;gap:14px;}
+  .stream .card-h{grid-template-columns:minmax(0,1fr) 112px;}
+  .sec-head{margin-bottom:22px;}
+  .prose{font-size:16.5px;}
+  .art-hero .ph{border-radius:0;margin-inline:calc(var(--gut) * -1);}
+  .art-hero figcaption{padding-inline:0;}
+  .foot-top{grid-template-columns:minmax(0,1fr);}
+  .foot-bot nav{margin-left:0;gap:14px;}
+  .nl-form .btn{width:100%;}
+}
+
+@media (max-width:420px){
+  .util-date{font-size:11px;}
+}
+
+/* ---------- media, youtube and show pages ---------- */
+@media (max-width:1080px){
+  .media-grid{grid-template-columns:minmax(0,1fr);}
+  .vlist{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:0 14px;}
+  .yt-grid{grid-template-columns:repeat(3,minmax(0,1fr));}
+  .show-split{grid-template-columns:minmax(0,1fr);}
+  .show-aside{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:22px;align-items:start;}
+  .other-shows{margin-top:0;}
+}
+@media (max-width:900px){
+  .yt-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:26px 22px;}
+  .epi a{grid-template-columns:150px minmax(0,1fr);gap:15px;}
+}
+@media (max-width:760px){
+  .vlist{grid-template-columns:minmax(0,1fr);}
+  .show-aside{grid-template-columns:minmax(0,1fr);}
+  .show-hero{min-height:0;}
+  .show-hero-in{flex-direction:column;align-items:flex-start;}
+  .epi a{grid-template-columns:124px minmax(0,1fr);}
+  .epi p{display:none;}
+}
+@media (max-width:620px){
+  .yt-grid{grid-template-columns:minmax(0,1fr);gap:0;}
+  .yt-grid .yt-card{padding-top:22px;margin-top:22px;border-top:1px solid var(--line);}
+  .yt-grid .yt-card:first-child{padding-top:0;margin-top:0;border-top:0;}
+  .media-top{gap:14px;}
+  .media-all{margin-left:0;}
+  .media-tabs{gap:2px;}
+  .media-tabs button{padding:8px 10px;font-size:12.5px;}
+  .show-cta{width:100%;}
+  .show-cta .btn{width:100%;justify-content:flex-start;}
+  .epi a{grid-template-columns:100px minmax(0,1fr);gap:12px;padding:11px;}
+  .epi h3{font-size:14.5px;}
+}
+
+@media print{
+  .util,.brandbar,.secnav,.scrim,.drawer,.search,.progress,.art-share,.aside,.readnext,.nl,.foot,.paywall-cta{display:none !important;}
+  .art-top{grid-template-columns:1fr;}
+  body{font-size:11pt;}
+}
