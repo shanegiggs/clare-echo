@@ -1488,8 +1488,8 @@ ${tail()}`;
    showreel, a testimonial — is marked on the page with .ad-ph or .tbc so it
    cannot ship by accident looking finished. */
 const AD_TEAM = [
-  { name: 'Ross Houlihan', role: 'Sales Director', email: 'ross@clareecho.ie' },
-  { name: 'Kieran Murphy', role: 'Account Executive', email: 'kieran@clareecho.ie' }
+  { name: 'Ross Houlihan', role: 'Sales Director', email: 'ross@clareecho.ie', photo: 'team-ross-houlihan.webp' },
+  { name: 'Kieran Murphy', role: 'Account Executive', email: 'kieran@clareecho.ie', photo: 'team-kieran-murphy.webp' }
 ];
 const AD_PHONE = { href: 'tel:+353851488435', label: '085 148 8435' };
 
@@ -1675,12 +1675,12 @@ ${siteHeader('')}
         </div>
         <!-- A YouTube Short, so the frame is 9:16. It is a plain link to YouTube
              until main.js swaps in the player on click; nothing loads from
-             YouTube's player until someone asks for it. The poster comes from
-             i.ytimg — replace with a local copy once one is saved. -->
-        <a class="ad-video" href="https://www.youtube.com/shorts/${AD_VIDEO}" target="_blank" rel="noopener" data-yt="${AD_VIDEO}" aria-label="Play video: Advertise with The Clare Echo">
-          <img src="https://i.ytimg.com/vi/${AD_VIDEO}/oardefault.jpg" alt="" decoding="async" onerror="if(this.src.indexOf('oardefault')>0){this.src=this.src.replace('oardefault','hqdefault')}else{this.remove()}">
+             YouTube's player until someone asks for it. The poster is a local
+             frame from the Short; its lower third already names the speaker. -->
+        <a class="ad-video" href="https://www.youtube.com/shorts/${AD_VIDEO}" target="_blank" rel="noopener" data-yt="${AD_VIDEO}" aria-label="Play video: Dave Noble of St. Francis Credit Union on advertising with The Clare Echo">
+          <img src="{{B}}assets/img/adv-video-poster.webp" alt="" decoding="async">
+          <span class="ad-video-tag">${ico.play}Client story</span>
           <span class="ad-video-play">${ico.play}</span>
-          <span class="ad-video-cap"><b>Watch</b>Advertise with The Clare Echo</span>
         </a>
       </div>
 
@@ -1711,7 +1711,7 @@ ${siteHeader('')}
         <article class="aud-card">
           <p class="aud-tag">In print</p>
           <p class="aud-big">13,500+<span>copies every Thursday</span></p>
-          <p class="aud-copy">Clare&rsquo;s local paper, on sale county-wide.</p>
+          <p class="aud-copy">Free to every reader &mdash; so it reaches everyone.</p>
           <ul class="aud-facts">
             <li>${ico.check}<span><b>${fmt(AD_READ.papersMonth)}</b> papers a month</span></li>
           </ul>
@@ -1884,7 +1884,9 @@ ${siteHeader('')}
       ${adSecHead('05', 'Meet the team', 'From choosing the right approach to designing your campaign, we&rsquo;re here to help every step of the way.')}
       <div class="team">
         ${AD_TEAM.map(p => `<article class="person">
-          <div class="person-pic"><span class="ad-ph-tag">Photo</span><span class="person-init" aria-hidden="true">${esc(initials(p.name))}</span></div>
+          ${p.photo
+            ? `<div class="person-pic person-pic--photo"><img src="{{B}}assets/img/${p.photo}" alt="${esc(p.name)}" loading="lazy" decoding="async"></div>`
+            : `<div class="person-pic"><span class="ad-ph-tag">Photo</span><span class="person-init" aria-hidden="true">${esc(initials(p.name))}</span></div>`}
           <h3>${esc(p.name)}</h3>
           <p>${esc(p.role)}</p>
           <a href="mailto:${p.email}">${adIco.mail}${p.email}</a>
