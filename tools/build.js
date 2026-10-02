@@ -338,6 +338,19 @@ function secnav(active) {
 </nav>`;
 }
 
+/* The Advertise page doubles as a design guide for the developer, so its
+   header and drawer keep their look but lead nowhere: every href inside
+   them is stripped. The page's own in-page nav and footer are untouched. */
+function navAsGuide(html) {
+  // only on <a> tags: the logo's <use href> must keep pointing at its symbol
+  const strip = block => block.replace(/<a\b[^>]*>/g, tag => tag.replace(/\s(href|target|rel)="[^"]*"/g, ''));
+  return html
+    .replace(/<div class="util">[\s\S]*?<\/nav>\s*<\/div>\s*<\/div>/, strip)
+    .replace(/<header class="brandbar">[\s\S]*?<\/header>/, strip)
+    .replace(/<nav class="secnav"[\s\S]*?<\/nav>/, strip)
+    .replace(/<aside class="drawer"[\s\S]*?<\/aside>/, strip);
+}
+
 // one call site per page instead of three
 const siteHeader = active => `${utilbar()}\n${brandbar(active)}\n${secnav(active)}`;
 
@@ -2080,7 +2093,7 @@ function write(rel, html, depth) {
 let bytes = 0, pages = 0;
 bytes += write('index.html', buildHome(), 0); pages++;
 bytes += write('subscribe.html', buildSubscribe(), 0); pages++;
-bytes += write('advertise.html', buildAdvertise(), 0); pages++;
+bytes += write('advertise.html', navAsGuide(buildAdvertise()), 0); pages++;
 bytes += write('obituaries.html', buildObituaries(), 0); pages++;
 TOPICS.forEach(t => { bytes += write(`topic/${t.slug}.html`, buildTopic(t), 1); pages++; });
 bytes += write('digital-edition.html', buildDigital(), 0); pages++;
