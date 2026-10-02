@@ -1508,6 +1508,13 @@ const AD_STATS = [
   [fmt(AD_READ.papersWeek) + '+', 'papers every week'],
   [fmt(floorTo(socialTotal, 1000)) + '+', 'social media followers']
 ];
+// The Echo's weekly copy deadlines, ending on publication day
+const AD_DEADLINES = [
+  { day: 'Mon', what: 'Design', note: 'If we&rsquo;re creating your ad', time: '5pm' },
+  { day: 'Tue', what: 'Print', note: 'Final deadline for print ads', time: '1pm' },
+  { day: 'Wed', what: 'Planning notices', note: 'Notices for that week&rsquo;s paper', time: '1pm' },
+  { day: 'Thu', what: 'In the paper', note: 'Out free across Clare', time: '', out: true }
+];
 const AD_VIDEO = 'CRpxBfwrd2E';
 
 const AD_WHY = [
@@ -1832,17 +1839,11 @@ ${siteHeader('')}
 
         <article class="spec-card">
           <h3>Deadlines</h3>
-          <p>The paper is out every Thursday.</p>
-          <table class="spec-table">
-            <thead><tr><th scope="col">Booking</th><th scope="col">Book by</th><th scope="col">Artwork by</th></tr></thead>
-            <tbody>
-              <tr><th scope="row">Display</th><td>${tbc()}</td><td>${tbc()}</td></tr>
-              <tr><th scope="row">Classifieds</th><td>${tbc()}</td><td>${tbc()}</td></tr>
-              <tr><th scope="row">Planning notices</th><td>${tbc()}</td><td>&mdash;</td></tr>
-              <tr><th scope="row">Inserts</th><td>${tbc()}</td><td>${tbc()}</td></tr>
-              <tr><th scope="row">Online</th><td colspan="2">${tbc()}</td></tr>
-            </tbody>
-          </table>
+          <p>The paper is out free every Thursday.</p>
+          <ol class="dl-week">
+            ${AD_DEADLINES.map(d => `<li${d.out ? ' class="is-out"' : ''}><span class="dl-day">${d.day}</span><span class="dl-what"><b>${d.what}</b>${d.note}</span><span class="dl-time">${d.time}</span></li>`).join('\n            ')}
+          </ol>
+          <p class="spec-foot">Terms and conditions apply.</p>
         </article>
 
         <article class="spec-card spec-card--wide">

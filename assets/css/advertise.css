@@ -319,7 +319,17 @@
   border-radius:10px;background:var(--blue-wash);font-size:14.5px;font-weight:700;color:var(--blue-ink);}
 .spec-link svg{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:1.9;stroke-linejoin:round;}
 .spec-card--design .btn{margin-top:auto;}
+.spec-card--design .spec-link{margin-bottom:18px;}
 .spec-card--design .btn .tbc{margin-left:4px;}
+.dl-week{margin:18px 0 0;padding:0;list-style:none;border-top:2px solid var(--ink);}
+.dl-week li{display:grid;grid-template-columns:52px minmax(0,1fr) auto;gap:14px;align-items:center;
+  padding:14px 0;border-bottom:1px solid var(--line);}
+.dl-day{display:grid;place-items:center;height:40px;border-radius:8px;background:var(--blue-wash);color:var(--blue-ink);
+  font-size:12px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;}
+.dl-what{font-size:13.5px;line-height:1.4;color:var(--slate);}
+.dl-what b{display:block;font-size:15px;font-weight:750;letter-spacing:-.015em;color:var(--ink);}
+.dl-time{font-size:20px;font-weight:800;letter-spacing:-.03em;font-variant-numeric:tabular-nums;}
+.dl-week .is-out .dl-day{background:var(--blue);color:#fff;}
 .spec-cols{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:clamp(24px,4vw,56px);}
 .spec-table{width:100%;border-collapse:collapse;margin-top:18px;font-size:14px;font-variant-numeric:tabular-nums;}
 .spec-table th,.spec-table td{text-align:left;padding:10px 12px 10px 0;border-bottom:1px solid var(--line);vertical-align:middle;}
