@@ -1537,7 +1537,8 @@ const AD_PRINT = [
   { id: 'banner', name: 'Banner', w: 265, h: 40, x: 0, y: 285 },
   { id: 'ftop', name: 'Front page — top', w: 128, h: 65, x: 137, y: 0, front: true },
   { id: 'fbot', name: 'Front page — bottom', w: 82, h: 90, x: 0, y: 235, front: true },
-  { id: 'class', name: 'Classified', w: 60, h: 60, x: 0, y: 265 }
+  { id: 'class', name: 'Classified', w: 60, h: 60, x: 0, y: 265, cls: true },
+  { id: 'classL', name: 'Large classified', w: 60, h: 120, x: 0, y: 205, cls: true }
 ];
 const AD_ONLINE = [
   { id: 'lb', name: 'Leaderboard', size: '728 × 90', mob: '320 × 50 on mobile' },
@@ -1593,7 +1594,8 @@ function adPrintPlanner() {
               <div class="pl-live">
                 <div class="pl-mast">${logo()}</div>
                 <div class="pl-cols">${'<i></i>'.repeat(7)}</div>
-                ${AD_PRINT.map(s => `<div class="pl-ad" data-ad="${s.id}" style="${adBox(s)}"><b>Your ad</b><em>${s.w} &times; ${s.h} mm</em></div>`).join('\n                ')}
+                ${AD_PRINT.filter(s => !s.cls).map(s => `<div class="pl-ad" data-ad="${s.id}" style="${adBox(s)}"><b>Your ad</b><em>${s.w} &times; ${s.h} mm</em></div>`).join('\n                ')}
+                ${adClassPage()}
               </div>
             </div>
           </div>
@@ -1641,21 +1643,17 @@ function adOnlinePlanner() {
         </div>`;
 }
 
-/* Classifieds page: 4 columns x 4 rows of 60 x 60 mm boxes, which with
-   three gutters fills the 265 mm width. One box is lit as "your ad". */
+/* Classifieds page for the planner: 4 columns x 4 rows of 60 mm boxes,
+   which with three gutters fills the 265 mm width. Box 6 is "your ad";
+   for a large classified it spans two rows and box 10 steps aside. */
 const AD_CLASS_CATS = ['For sale', 'Services', 'To let', 'Wanted', 'Notices', null, 'Motors', 'Property',
   'Services', 'Events', 'For sale', 'Lost &amp; found', 'Wanted', 'Services', 'Notices', 'For sale'];
-function adClassifieds() {
-  return `<figure class="cls">
-            <div class="cls-page" aria-hidden="true">
-              <p class="cls-head">Classifieds</p>
-              <div class="cls-grid">
-                ${AD_CLASS_CATS.map(c => c ? `<span class="cls-ad"><i>${c}</i></span>` : `<span class="cls-ad is-you"><b>Your ad</b><em>60 &times; 60 mm</em></span>`).join('')}
-              </div>
-            </div>
-            <figcaption>4 columns &times; 4 rows &middot; each box 60 &times; 60 mm</figcaption>
-          </figure>`;
-}
+const adClassPage = () => `<div class="pl-cls">
+                  <p class="cls-head">Classifieds</p>
+                  <div class="cls-grid">
+                    ${AD_CLASS_CATS.map(c => c ? `<span class="cls-ad"><i>${c}</i></span>` : `<span class="cls-ad is-you"><b>Your ad</b><em class="sz-s">60 &times; 60 mm</em><em class="sz-l">60 &times; 120 mm</em></span>`).join('')}
+                  </div>
+                </div>`;
 
 // mock supplement covers — stand-ins until the real ones are photographed
 function adCover(title, tone) {
@@ -1806,9 +1804,8 @@ ${siteHeader('')}
       </div>
 
       <h3 class="sol-group">In print</h3>
-      <div class="sols sols--3">
-        ${sol({ tag: 'Classifieds', title: 'Sell it. Find it. Say it.', copy: 'Fixed 60 &times; 60 mm boxes, sixteen to a page. Sales, services and notices.', price: { from: true, amount: 20, vat: 'ex VAT' }, cls: 'sol--wide',
-          extra: adClassifieds() })}
+      <div class="sols">
+        ${sol({ tag: 'Classifieds', title: 'Sell it. Find it. Say it.', copy: '60 &times; 60 mm, or 60 &times; 120 mm large. Sales, services and notices.', price: { from: true, amount: 20, vat: 'ex VAT' } })}
         ${sol({ tag: 'Recruitment', title: 'Hire locally.', copy: 'Your vacancy in the paper and on Job Watch online, in front of Clare&rsquo;s workforce.' })}
         ${sol({ tag: 'Planning notices', title: 'Notices, done right.', copy: 'Planning and public notices, set to format and published on time.', price: { amount: 50, vat: 'inc VAT' } })}
         ${sol({ tag: 'Inserts', title: 'Your leaflet, in their hands.', copy: 'Flyers, brochures and menus delivered inside the paper.' })}

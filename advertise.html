@@ -224,6 +224,7 @@
             <label><input type="radio" name="pl-print" value="ftop"><span><b>Front page &mdash; top</b><em>128 &times; 65 mm</em></span></label>
             <label><input type="radio" name="pl-print" value="fbot"><span><b>Front page &mdash; bottom</b><em>82 &times; 90 mm</em></span></label>
             <label><input type="radio" name="pl-print" value="class"><span><b>Classified</b><em>60 &times; 60 mm</em></span></label>
+            <label><input type="radio" name="pl-print" value="classL"><span><b>Large classified</b><em>60 &times; 120 mm</em></span></label>
           </fieldset>
           <div class="pl-stage" aria-hidden="true">
             <div class="pl-page">
@@ -238,7 +239,12 @@
                 <div class="pl-ad" data-ad="banner" style="left:0%;top:87.69%;width:100%;height:12.31%"><b>Your ad</b><em>265 &times; 40 mm</em></div>
                 <div class="pl-ad" data-ad="ftop" style="left:51.7%;top:0%;width:48.3%;height:20%"><b>Your ad</b><em>128 &times; 65 mm</em></div>
                 <div class="pl-ad" data-ad="fbot" style="left:0%;top:72.31%;width:30.94%;height:27.69%"><b>Your ad</b><em>82 &times; 90 mm</em></div>
-                <div class="pl-ad" data-ad="class" style="left:0%;top:81.54%;width:22.64%;height:18.46%"><b>Your ad</b><em>60 &times; 60 mm</em></div>
+                <div class="pl-cls">
+                  <p class="cls-head">Classifieds</p>
+                  <div class="cls-grid">
+                    <span class="cls-ad"><i>For sale</i></span><span class="cls-ad"><i>Services</i></span><span class="cls-ad"><i>To let</i></span><span class="cls-ad"><i>Wanted</i></span><span class="cls-ad"><i>Notices</i></span><span class="cls-ad is-you"><b>Your ad</b><em class="sz-s">60 &times; 60 mm</em><em class="sz-l">60 &times; 120 mm</em></span><span class="cls-ad"><i>Motors</i></span><span class="cls-ad"><i>Property</i></span><span class="cls-ad"><i>Services</i></span><span class="cls-ad"><i>Events</i></span><span class="cls-ad"><i>For sale</i></span><span class="cls-ad"><i>Lost &amp; found</i></span><span class="cls-ad"><i>Wanted</i></span><span class="cls-ad"><i>Services</i></span><span class="cls-ad"><i>Notices</i></span><span class="cls-ad"><i>For sale</i></span>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
@@ -293,20 +299,12 @@
       </div>
 
       <h3 class="sol-group">In print</h3>
-      <div class="sols sols--3">
-        <article class="sol sol--wide">
+      <div class="sols">
+        <article class="sol">
           <p class="sol-tag">Classifieds</p>
           <h3>Sell it. Find it. Say it.</h3>
-          <p class="sol-copy">Fixed 60 &times; 60 mm boxes, sixteen to a page. Sales, services and notices.</p>
-          <figure class="cls">
-            <div class="cls-page" aria-hidden="true">
-              <p class="cls-head">Classifieds</p>
-              <div class="cls-grid">
-                <span class="cls-ad"><i>For sale</i></span><span class="cls-ad"><i>Services</i></span><span class="cls-ad"><i>To let</i></span><span class="cls-ad"><i>Wanted</i></span><span class="cls-ad"><i>Notices</i></span><span class="cls-ad is-you"><b>Your ad</b><em>60 &times; 60 mm</em></span><span class="cls-ad"><i>Motors</i></span><span class="cls-ad"><i>Property</i></span><span class="cls-ad"><i>Services</i></span><span class="cls-ad"><i>Events</i></span><span class="cls-ad"><i>For sale</i></span><span class="cls-ad"><i>Lost &amp; found</i></span><span class="cls-ad"><i>Wanted</i></span><span class="cls-ad"><i>Services</i></span><span class="cls-ad"><i>Notices</i></span><span class="cls-ad"><i>For sale</i></span>
-              </div>
-            </div>
-            <figcaption>4 columns &times; 4 rows &middot; each box 60 &times; 60 mm</figcaption>
-          </figure>
+          <p class="sol-copy">60 &times; 60 mm, or 60 &times; 120 mm large. Sales, services and notices.</p>
+          
           <p class="sol-price">From <b>&euro;20</b>ex VAT</p>
         </article>
         <article class="sol">
@@ -445,6 +443,7 @@
                   <tr><th scope="row"><span class="mini" aria-hidden="true"><i style="left:51.7%;top:0%;width:48.3%;height:20%"></i></span>Front page &mdash; top</th><td>128 &times; 65</td></tr>
                   <tr><th scope="row"><span class="mini" aria-hidden="true"><i style="left:0%;top:72.31%;width:30.94%;height:27.69%"></i></span>Front page &mdash; bottom</th><td>82 &times; 90</td></tr>
                   <tr><th scope="row"><span class="mini" aria-hidden="true"><i style="left:0%;top:81.54%;width:22.64%;height:18.46%"></i></span>Classified</th><td>60 &times; 60</td></tr>
+                  <tr><th scope="row"><span class="mini" aria-hidden="true"><i style="left:0%;top:63.08%;width:22.64%;height:36.92%"></i></span>Large classified</th><td>60 &times; 120</td></tr>
                 </tbody>
               </table>
             </div>
