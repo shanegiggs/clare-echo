@@ -1406,7 +1406,7 @@ ${siteHeader('obituaries')}
         <div class="notice-empty">
           <p><b>No notices have been published yet today.</b></p>
           <p>Notices appear here as soon as the newsroom receives them. To place one, ring
-          the office on <a href="tel:+353851488435">+353 85 148 8435</a> or email
+          the office on <a href="tel:+353656719021">065 671 9021</a> or email
           <a href="mailto:ross@clareecho.ie">ross@clareecho.ie</a>.</p>
         </div>
 
@@ -1422,7 +1422,7 @@ ${siteHeader('obituaries')}
           <p>We will take it over the phone.</p>
           <p class="sm">The office is open Monday to Friday. Notices received before 4pm are
           published the same day.</p>
-          <a class="btn btn--primary btn--sm" href="tel:+353851488435">+353 85 148 8435${ico.arrow}</a>
+          <a class="btn btn--primary btn--sm" href="tel:+353656719021">065 671 9021${ico.arrow}</a>
         </div>
         <div class="adslot" style="margin-top:0">
           <span>Advertisement</span>
@@ -1502,10 +1502,12 @@ ${tail()}`;
    showreel, a testimonial — is marked on the page with .ad-ph or .tbc so it
    cannot ship by accident looking finished. */
 const AD_TEAM = [
-  { name: 'Ross Houlihan', role: 'Sales Director', email: 'ross@clareecho.ie', photo: 'team-ross-houlihan.webp' },
-  { name: 'Kieran Murphy', role: 'Account Executive', email: 'kieran@clareecho.ie', photo: 'team-kieran-murphy.webp' }
+  { name: 'Ross Houlihan', role: 'Sales Director', email: 'ross@clareecho.ie', phone: '085 148 8435', photo: 'team-ross-houlihan.webp' },
+  { name: 'Kieran Murphy', role: 'Account Executive', email: 'kieran@clareecho.ie', phone: '087 356 2103', photo: 'team-kieran-murphy.webp' }
 ];
-const AD_PHONE = { href: 'tel:+353851488435', label: '085 148 8435' };
+// the office line; each salesperson's mobile is on their card
+const AD_PHONE = { href: 'tel:+353656719021', label: '065 671 9021' };
+const telHref = n => 'tel:+353' + n.replace(/\s/g, '').replace(/^0/, '');
 
 /* Audience figures, all supplied by the Echo. Readership is the Echo's own
    monthly figure; social is the sum of its followers across platforms
@@ -1922,6 +1924,7 @@ ${siteHeader('')}
           <h3>${esc(p.name)}</h3>
           <p>${esc(p.role)}</p>
           <a href="mailto:${p.email}">${adIco.mail}${p.email}</a>
+          <a href="${telHref(p.phone)}">${adIco.phone}${p.phone}</a>
         </article>`).join('\n        ')}
         <article class="person person--office">
           <div class="office-pic">${adIco.pinS}</div>
