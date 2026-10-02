@@ -1493,20 +1493,20 @@ const AD_TEAM = [
 ];
 const AD_PHONE = { href: 'tel:+353851488435', label: '085 148 8435' };
 
-/* Readership. The page views and print run are the Echo's own; readers per
-   copy is the usual estimate for a local weekly and should be replaced with
-   a survey figure if the Echo has one. Monthly readership counts reads, not
-   unique people: every copy read plus every page viewed. */
-const AD_READ = { papersWeek: 13500, pageviewsMonth: 465000, perCopy: 2.5 };
-AD_READ.papersMonth = Math.round(AD_READ.papersWeek * 52 / 12);           // 58,500
-AD_READ.printReads = Math.round(AD_READ.papersMonth * AD_READ.perCopy);   // 146,250
-AD_READ.total = AD_READ.printReads + AD_READ.pageviewsMonth;              // 611,250
+/* Audience figures, all supplied by the Echo. Readership is the Echo's own
+   monthly figure; social is the sum of its followers across platforms
+   (platform split still to confirm). */
+const AD_READ = { papersWeek: 13500, pageviewsMonth: 465000, readersMonth: 335000 };
+AD_READ.papersMonth = Math.round(AD_READ.papersWeek * 52 / 12);   // 58,500
+const AD_SOCIAL = [9864, 54000, 16600, 308, 1100];
 const fmt = n => n.toLocaleString('en-IE');
 const floorTo = (n, step) => Math.floor(n / step) * step;
+const socialTotal = AD_SOCIAL.reduce((a, b) => a + b, 0);         // 81,872
 const AD_STATS = [
-  [fmt(floorTo(AD_READ.total, 10000)) + '+', 'monthly readership, print + online'],
+  [fmt(AD_READ.readersMonth) + '+', 'monthly readership'],
   [fmt(floorTo(AD_READ.pageviewsMonth, 1000)) + '+', 'page views a month'],
-  [fmt(AD_READ.papersWeek) + '+', 'papers every week']
+  [fmt(AD_READ.papersWeek) + '+', 'papers every week'],
+  [fmt(floorTo(socialTotal, 1000)) + '+', 'social media followers']
 ];
 const AD_VIDEO = 'CRpxBfwrd2E';
 
@@ -1653,7 +1653,7 @@ function buildAdvertise() {
 
   return head({
     title: 'Advertise with us — The Clare Echo',
-    desc: "Reach all of Clare. 13,500 papers every Thursday and ${fmt(AD_READ.pageviewsMonth)}+ page views a month. Print and online advertising, designed and planned by one local team.",
+    desc: `Reach all of Clare. ${fmt(AD_READ.readersMonth)}+ monthly readers, 13,500 papers every week and ${fmt(AD_READ.pageviewsMonth)}+ page views a month. Print and online advertising, designed and planned by one local team.`,
     css: ['advertise']
   }) + `
 ${siteHeader('')}
@@ -1687,7 +1687,6 @@ ${siteHeader('')}
       <dl class="ad-stats">
         ${AD_STATS.map(([n, l]) => `<div><dt>${l}</dt><dd>${n}</dd></div>`).join('\n        ')}
       </dl>
-      <p class="ad-stats-note">Readership: ${fmt(AD_READ.papersMonth)} papers a month at ${AD_READ.perCopy} readers per copy, plus monthly page views.</p>
     </div>
   </section>
 
@@ -1712,10 +1711,9 @@ ${siteHeader('')}
         <article class="aud-card">
           <p class="aud-tag">In print</p>
           <p class="aud-big">13,500+<span>copies every Thursday</span></p>
-          <p class="aud-copy">On shelves across the county and kept all week.</p>
+          <p class="aud-copy">Clare&rsquo;s local paper, on sale county-wide.</p>
           <ul class="aud-facts">
             <li>${ico.check}<span><b>${fmt(AD_READ.papersMonth)}</b> papers a month</span></li>
-            <li>${ico.check}<span><b>${fmt(floorTo(AD_READ.printReads, 1000))}+</b> monthly print readership</span></li>
           </ul>
           ${adPh('Distribution map of Clare', 'ad-ph--map')}
         </article>
@@ -1725,7 +1723,6 @@ ${siteHeader('')}
           <p class="aud-copy">Clare&rsquo;s most-read news site, on desktop, mobile and tablet.</p>
           <ul class="aud-facts">
             <li>${ico.check}<span><b>1,000+</b> guaranteed views per advert or article</span></li>
-            <li>${ico.check}<span><b>0.4%</b> average click-through &mdash; well above the display norm</span></li>
           </ul>
           ${adPh('Reader profile &mdash; age, device and location split', 'ad-ph--map')}
         </article>
@@ -1799,7 +1796,7 @@ ${siteHeader('')}
 
       <h3 class="sol-group">Online</h3>
       <div class="sols">
-        ${sol({ tag: 'Website', title: 'Display that gets clicked.', copy: 'Leaderboards, MPUs and billboards across clareecho.ie, on every device.', cls: 'sol--half' })}
+        ${sol({ tag: 'Website', title: 'Display that gets seen.', copy: 'Leaderboards, MPUs and billboards across clareecho.ie, on every device.', cls: 'sol--half' })}
         ${sol({ tag: 'Sponsored articles', title: 'Your story, read as news.', copy: 'Written with our team, clearly labelled, and guaranteed 1,000+ page views.', cls: 'sol--half' })}
       </div>
 

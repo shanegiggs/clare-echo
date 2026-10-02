@@ -61,7 +61,7 @@
 .ad-video-cap b{display:block;font-size:11px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:#fff;margin-bottom:3px;}
 .ad-video iframe{position:absolute;inset:0;width:100%;height:100%;border:0;z-index:2;}
 
-.ad-stats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));margin:clamp(40px,5vw,64px) 0 0;
+.ad-stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));margin:clamp(40px,5vw,64px) 0 0;
   border-top:1px solid var(--line);}
 .ad-stats div{display:flex;flex-direction:column-reverse;justify-content:flex-end;gap:8px;
   padding:24px 20px 4px 0;}
@@ -69,7 +69,6 @@
 .ad-stats dd{margin:0;font-size:clamp(30px,3.6vw,46px);font-weight:800;letter-spacing:-.04em;line-height:1;
   font-variant-numeric:tabular-nums;color:var(--blue);}
 .ad-stats dt{font-size:13.5px;color:var(--slate);letter-spacing:-.008em;}
-.ad-stats-note{margin-top:16px;font-size:12px;color:var(--slate);letter-spacing:-.005em;}
 
 /* in-page nav, parked under the sticky brand bar */
 .ad-jump{position:sticky;top:var(--head-h);z-index:50;background:rgba(255,255,255,.96);border-top:1px solid var(--line);
@@ -400,6 +399,9 @@
 }
 
 @media (max-width:900px){
+  .ad-stats{grid-template-columns:repeat(2,minmax(0,1fr));}
+  .ad-stats div:nth-child(3){padding-left:0;border-left:0;}
+  .ad-stats div:nth-child(n+3){border-top:1px solid var(--line);margin-top:18px;}
   .pl-panel{grid-template-columns:minmax(0,1fr);}
   .pl-list{border-right:0;border-bottom:1px solid var(--line);display:flex;overflow-x:auto;scrollbar-width:none;gap:4px;}
   .pl-list::-webkit-scrollbar{display:none;}
@@ -416,7 +418,7 @@
   .ad-video{width:min(64%,230px);}
   .ad-stats{grid-template-columns:minmax(0,1fr);}
   .ad-stats div{padding:18px 0 16px;}
-  .ad-stats div + div{padding-left:0;border-left:0;border-top:1px solid var(--line);}
+  .ad-stats div + div,.ad-stats div:nth-child(n+3){padding-left:0;border-left:0;border-top:1px solid var(--line);margin-top:0;}
   .ad-stats dd{font-size:36px;}
   .ad-jump .wrap{gap:10px;}
   .why{grid-template-columns:minmax(0,1fr);row-gap:0;}
