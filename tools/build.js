@@ -1545,6 +1545,7 @@ const AD_ONLINE = [
   { id: 'bb', name: 'Billboard', size: '970 × 250', mob: '320 × 100 on mobile' },
   { id: 'mpu', name: 'MPU', size: '300 × 250', mob: 'In-feed on mobile' },
   { id: 'hp', name: 'Half page', size: '300 × 600', mob: 'Desktop only' },
+  { id: 'sky', name: 'Skyscraper', size: '160 × 600', mob: 'Desktop only' },
   { id: 'spon', name: 'Sponsored article', size: '1,000+ views', mob: 'Guaranteed' }
 ];
 
@@ -1561,7 +1562,6 @@ const adIco = {
   phone: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 4h3.5l1.8 4.4-2.3 1.4a11 11 0 0 0 6.2 6.2l1.4-2.3L20 15.5V19a1.5 1.5 0 0 1-1.6 1.5A16.5 16.5 0 0 1 3.5 5.6 1.5 1.5 0 0 1 5 4z"/></svg>',
   mail: '<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3.5 6.5l8.5 6.5 8.5-6.5"/></svg>',
   down: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4v12M6.5 10.5L12 16l5.5-5.5M5 20h14"/></svg>',
-  spark: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l1.9 5.6L19.5 10l-5.6 1.9L12 17.5l-1.9-5.6L4.5 10l5.6-1.4L12 3z"/><path d="M19 15l.8 2.2L22 18l-2.2.8L19 21l-.8-2.2L16 18l2.2-.8L19 15z"/></svg>',
   pinS: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-6.5-5.6-6.5-11a6.5 6.5 0 0 1 13 0c0 5.4-6.5 11-6.5 11z"/><circle cx="12" cy="10" r="2.4"/></svg>'
 };
 
@@ -1626,6 +1626,7 @@ function adOnlinePlanner() {
                   <div class="pl-side">
                     <div class="pl-slot pl-slot--mpu" data-ad="mpu"><b>300 &times; 250</b></div>
                     <div class="pl-slot pl-slot--hp" data-ad="hp"><b>300 &times; 600</b></div>
+                    <div class="pl-slot pl-slot--sky" data-ad="sky"><b>160 &times; 600</b></div>
                   </div>
                 </div>
               </div>
@@ -1809,7 +1810,7 @@ ${siteHeader('')}
         ${sol({ tag: 'Recruitment', title: 'Hire locally.', copy: 'Your vacancy in the paper and on Job Watch online, in front of Clare&rsquo;s workforce.' })}
         ${sol({ tag: 'Planning notices', title: 'Notices, done right.', copy: 'Planning and public notices, set to format and published on time.', price: { amount: 50, vat: 'inc VAT' } })}
         ${sol({ tag: 'Inserts', title: 'Your leaflet, in their hands.', copy: 'Flyers, brochures and menus delivered inside the paper.' })}
-        ${sol({ tag: 'Features &amp; supplements', title: 'Features readers keep.', copy: 'Themed features built around your sector &mdash; with space to tell your story.', cls: 'sol--wide',
+        ${sol({ tag: 'Features &amp; supplements', title: 'Features readers keep.', copy: 'A diverse range of themed features &mdash; with space to tell your story.', cls: 'sol--wide',
           extra: `<div class="ad-covers">
             ${adCover('Weddings', 'rose')}
             ${adCover('Farming', 'green')}
@@ -1851,7 +1852,7 @@ ${siteHeader('')}
           <span class="why-ico">${adIco.pen}</span>
           <h3>Design service</h3>
           <p>No artwork? Our in-house team designs your ad for print and web.</p>
-          <a class="spec-link" href="#" aria-disabled="true">${adIco.spark}<span>How we use AI to speed up design</span>${tbc('Link to come')}</a>
+          ${adPh('Collage of adverts we&rsquo;ve designed', 'ad-ph--collage')}
           <a class="btn btn--ghost" href="#" aria-disabled="true">${adIco.down}Media pack (PDF) ${tbc('To come')}</a>
         </article>
 
@@ -1886,6 +1887,7 @@ ${siteHeader('')}
                   <tr><th scope="row">Billboard</th><td>970 &times; 250</td></tr>
                   <tr><th scope="row">MPU</th><td>300 &times; 250</td></tr>
                   <tr><th scope="row">Half page</th><td>300 &times; 600</td></tr>
+                  <tr><th scope="row">Skyscraper</th><td>160 &times; 600</td></tr>
                   <tr><th scope="row">Mobile banner</th><td>320 &times; 50</td></tr>
                 </tbody>
               </table>
