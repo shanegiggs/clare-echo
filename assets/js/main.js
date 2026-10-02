@@ -264,6 +264,62 @@
     });
   })();
 
+  /* ---------- advertise: in-page nav follows the reader ---------- */
+  (function () {
+    var links = $$('.ad-jump-links a');
+    if (!links.length || !('IntersectionObserver' in window)) return;
+    var byId = {};
+    links.forEach(function (a) { byId[a.getAttribute('href').slice(1)] = a; });
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) {
+        if (!e.isIntersecting) return;
+        links.forEach(function (a) { a.classList.remove('is-on'); a.removeAttribute('aria-current'); });
+        var on = byId[e.target.id];
+        if (on) {
+          on.classList.add('is-on');
+          on.setAttribute('aria-current', 'location');
+          // keep the active link in view on the scrolling mobile rail
+          var rail = on.parentNode;
+          rail.scrollTo({ left: on.offsetLeft - 16, behavior: reduced ? 'auto' : 'smooth' });
+        }
+      });
+    }, { rootMargin: '-45% 0px -50% 0px' });
+    Object.keys(byId).forEach(function (id) {
+      var el = document.getElementById(id);
+      if (el) io.observe(el);
+    });
+  })();
+
+  /* ---------- advertise: video plays in place ----------
+     The frame is a link to YouTube; with JS it swaps in the player instead. */
+  (function () {
+    $$('.ad-video[data-yt]').forEach(function (el) {
+    el.addEventListener('click', function (e) {
+      e.preventDefault();
+      var f = document.createElement('iframe');
+      f.src = 'https://www.youtube-nocookie.com/embed/' + el.dataset.yt + '?autoplay=1&playsinline=1&rel=0';
+      f.title = 'Advertise with The Clare Echo';
+      f.allow = 'autoplay; encrypted-media; picture-in-picture; fullscreen';
+      f.allowFullscreen = true;
+      // an iframe cannot live inside a link, so the link gives way to a frame
+      var box = document.createElement('div');
+      box.className = el.className;
+      box.appendChild(f);
+      el.parentNode.replaceChild(box, el);
+    });
+    });
+  })();
+
+  /* ---------- advertise: planner size list ----------
+     On narrow screens the list becomes a sideways rail; start it on the
+     size that is lit rather than leaving it off-screen. */
+  (function () {
+    $$('.pl-list').forEach(function (list) {
+      var on = $('input:checked', list);
+      if (on) list.scrollLeft = on.parentNode.offsetLeft - 10;
+    });
+  })();
+
   /* ---------- podcast series tabs ---------- */
   (function () {
     var tabs = $$('[data-media-tab]');

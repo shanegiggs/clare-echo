@@ -154,9 +154,7 @@
 }
 
 @media (max-width:1080px){
-  .brandbar .logo{--logo-h:24px;}
-  .secnav .wrap{gap:14px;}
-  .seclist a{padding:13px 11px;font-size:13.5px;}
+  :root{--head-h:64px;--tile:70px;}
   /* sidebar drops below the well and its modules run side by side */
   .home-top{grid-template-columns:minmax(0,1fr);}
   .home-rail{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:22px;align-items:start;
@@ -190,13 +188,9 @@
   .subs-grid{grid-template-columns:minmax(0,1fr);gap:32px;}
   .plancard{max-width:420px;}
   .nl-inner{grid-template-columns:minmax(0,1fr);}
-  /* Job Watch is the one link with nowhere else on the site to reach it, so
-     it's the first to go; Obituaries and E-Paper stay all the way down */
-  .util-links a:nth-child(3){display:none;}
 }
 
 @media (max-width:760px){
-  :root{--head-h:58px;}
   .lead-hero{grid-template-columns:minmax(0,1fr);gap:18px;}
   .lead-hero .ph{order:-1;}
   .lead-hero h1{font-size:clamp(27px,6.4vw,36px);}
@@ -213,12 +207,6 @@
 }
 
 @media (max-width:620px){
-  .util .wrap{height:34px;gap:14px;}
-  /* the date is the one thing here with no reader value worth the space —
-     Obituaries, E-Paper, Subscribe and Log in all stay, left to right */
-  .util-date{display:none;}
-  .util-links{gap:13px;}
-  .util-links a{font-size:10.5px;}
   .mast-actions .btn--ghost{display:none;}
   .cards{grid-template-columns:minmax(0,1fr);gap:0;}
   .cards .card{padding-top:24px;margin-top:24px;border-top:1px solid var(--line);}
@@ -235,10 +223,6 @@
   .foot-top{grid-template-columns:minmax(0,1fr);}
   .foot-bot nav{margin-left:0;gap:14px;}
   .nl-form .btn{width:100%;}
-}
-
-@media (max-width:420px){
-  .util-date{font-size:11px;}
 }
 
 /* ---------- media, youtube and show pages ---------- */
