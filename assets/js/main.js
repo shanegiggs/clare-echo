@@ -293,8 +293,7 @@
   /* ---------- advertise: video plays in place ----------
      The frame is a link to YouTube; with JS it swaps in the player instead. */
   (function () {
-    var el = $('.ad-video[data-yt]');
-    if (!el) return;
+    $$('.ad-video[data-yt]').forEach(function (el) {
     el.addEventListener('click', function (e) {
       e.preventDefault();
       var f = document.createElement('iframe');
@@ -304,9 +303,10 @@
       f.allowFullscreen = true;
       // an iframe cannot live inside a link, so the link gives way to a frame
       var box = document.createElement('div');
-      box.className = 'ad-video';
+      box.className = el.className;
       box.appendChild(f);
       el.parentNode.replaceChild(box, el);
+    });
     });
   })();
 

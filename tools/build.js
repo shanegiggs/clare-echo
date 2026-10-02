@@ -1496,14 +1496,14 @@ const AD_PHONE = { href: 'tel:+353851488435', label: '085 148 8435' };
 /* Audience figures, all supplied by the Echo. Readership is the Echo's own
    monthly figure; social is the sum of its followers across platforms
    (platform split still to confirm). */
-const AD_READ = { papersWeek: 13500, pageviewsMonth: 465000, readersMonth: 335000 };
+const AD_READ = { papersWeek: 13500, pageviewsMonth: 465000, readersWeek: 335000 };
 AD_READ.papersMonth = Math.round(AD_READ.papersWeek * 52 / 12);   // 58,500
 const AD_SOCIAL = [9864, 54000, 16600, 308, 1100];
 const fmt = n => n.toLocaleString('en-IE');
 const floorTo = (n, step) => Math.floor(n / step) * step;
 const socialTotal = AD_SOCIAL.reduce((a, b) => a + b, 0);         // 81,872
 const AD_STATS = [
-  [fmt(AD_READ.readersMonth) + '+', 'monthly readership'],
+  [fmt(AD_READ.readersWeek) + '+', 'people reached each week'],
   [fmt(floorTo(AD_READ.pageviewsMonth, 1000)) + '+', 'page views a month'],
   [fmt(AD_READ.papersWeek) + '+', 'papers every week'],
   [fmt(floorTo(socialTotal, 1000)) + '+', 'social media followers']
@@ -1536,7 +1536,8 @@ const AD_PRINT = [
   { id: 'eighth', name: 'Eighth page', w: 128, h: 75, x: 137, y: 250 },
   { id: 'banner', name: 'Banner', w: 265, h: 40, x: 0, y: 285 },
   { id: 'ftop', name: 'Front page — top', w: 128, h: 65, x: 137, y: 0, front: true },
-  { id: 'fbot', name: 'Front page — bottom', w: 82, h: 90, x: 0, y: 235, front: true }
+  { id: 'fbot', name: 'Front page — bottom', w: 82, h: 90, x: 0, y: 235, front: true },
+  { id: 'class', name: 'Classified', w: 60, h: 60, x: 0, y: 265 }
 ];
 const AD_ONLINE = [
   { id: 'lb', name: 'Leaderboard', size: '728 × 90', mob: '320 × 50 on mobile' },
@@ -1640,6 +1641,22 @@ function adOnlinePlanner() {
         </div>`;
 }
 
+/* Classifieds page: 4 columns x 4 rows of 60 x 60 mm boxes, which with
+   three gutters fills the 265 mm width. One box is lit as "your ad". */
+const AD_CLASS_CATS = ['For sale', 'Services', 'To let', 'Wanted', 'Notices', null, 'Motors', 'Property',
+  'Services', 'Events', 'For sale', 'Lost &amp; found', 'Wanted', 'Services', 'Notices', 'For sale'];
+function adClassifieds() {
+  return `<figure class="cls">
+            <div class="cls-page" aria-hidden="true">
+              <p class="cls-head">Classifieds</p>
+              <div class="cls-grid">
+                ${AD_CLASS_CATS.map(c => c ? `<span class="cls-ad"><i>${c}</i></span>` : `<span class="cls-ad is-you"><b>Your ad</b><em>60 &times; 60 mm</em></span>`).join('')}
+              </div>
+            </div>
+            <figcaption>4 columns &times; 4 rows &middot; each box 60 &times; 60 mm</figcaption>
+          </figure>`;
+}
+
 // mock supplement covers — stand-ins until the real ones are photographed
 function adCover(title, tone) {
   return `<figure class="ad-cover ad-cover--${tone}" aria-hidden="true">
@@ -1660,7 +1677,7 @@ function buildAdvertise() {
 
   return head({
     title: 'Advertise with us — The Clare Echo',
-    desc: `Reach all of Clare. ${fmt(AD_READ.readersMonth)}+ monthly readers, 13,500 papers every week and ${fmt(AD_READ.pageviewsMonth)}+ page views a month. Print and online advertising, designed and planned by one local team.`,
+    desc: `Reach all of Clare. ${fmt(AD_READ.readersWeek)}+ people reached each week, 13,500 papers every week and ${fmt(AD_READ.pageviewsMonth)}+ page views a month. Print and online advertising, designed and planned by one local team.`,
     css: ['advertise']
   }) + `
 ${siteHeader('')}
@@ -1680,15 +1697,13 @@ ${siteHeader('')}
             <a class="btn btn--ghost btn--lg" href="${AD_PHONE.href}">${adIco.phone}Call ${AD_PHONE.label}</a>
           </div>
         </div>
-        <!-- A YouTube Short, so the frame is 9:16. It is a plain link to YouTube
-             until main.js swaps in the player on click; nothing loads from
-             YouTube's player until someone asks for it. The poster is a local
-             frame from the Short; its lower third already names the speaker. -->
-        <a class="ad-video" href="https://www.youtube.com/shorts/${AD_VIDEO}" target="_blank" rel="noopener" data-yt="${AD_VIDEO}" aria-label="Play video: Dave Noble of St. Francis Credit Union on advertising with The Clare Echo">
-          <img src="{{B}}assets/img/adv-video-poster.webp" alt="" decoding="async">
-          <span class="ad-video-tag">${ico.play}Client story</span>
+        <!-- Placeholder for the new video. A 16:9 <video> or YouTube embed
+             drops straight into this frame. -->
+        <div class="ad-video ad-video--wide">
+          <span class="ad-ph-tag">Placeholder</span>
           <span class="ad-video-play">${ico.play}</span>
-        </a>
+          <span class="ad-video-cap"><b>New video</b>To come</span>
+        </div>
       </div>
 
       <dl class="ad-stats">
@@ -1746,15 +1761,20 @@ ${siteHeader('')}
       </ol>
 
       <figure class="quote">
-        <span class="ad-ph-tag">Placeholder testimonial</span>
         <div class="quote-text">
-          <blockquote>&ldquo;The phone started ringing the Thursday the ad ran. The team made it easy from start to finish.&rdquo;</blockquote>
-          <figcaption>
-            <span class="quote-av" aria-hidden="true">Logo</span>
-            <span><b>Client name</b>Business, Ennis</span>
-          </figcaption>
+          <p class="kicker">Client story</p>
+          <p class="quote-head">Hear it from Dave.</p>
+          <figcaption><b>Dave Noble</b>St. Francis Credit Union, on advertising with The Clare Echo.</figcaption>
+          <p class="sol-note">${tbc('Pull quote')} Add a line from the video here.</p>
         </div>
-        ${adPh('Client photo or their ad')}
+        <!-- A YouTube Short, so the frame is 9:16. It is a plain link to YouTube
+             until main.js swaps in the player on click; nothing loads from
+             YouTube's player until someone asks for it. The poster is a local
+             frame from the Short; its lower third already names the speaker. -->
+        <a class="ad-video" href="https://www.youtube.com/shorts/${AD_VIDEO}" target="_blank" rel="noopener" data-yt="${AD_VIDEO}" aria-label="Play video: Dave Noble of St. Francis Credit Union on advertising with The Clare Echo">
+          <img src="{{B}}assets/img/adv-video-poster.webp" alt="" loading="lazy" decoding="async">
+          <span class="ad-video-play">${ico.play}</span>
+        </a>
       </figure>
     </div>
   </section>
@@ -1786,8 +1806,9 @@ ${siteHeader('')}
       </div>
 
       <h3 class="sol-group">In print</h3>
-      <div class="sols">
-        ${sol({ tag: 'Classifieds', title: 'Sell it. Find it. Say it.', copy: 'Word or boxed ads for sales, services and notices. Simple, fast, read all week.', price: true })}
+      <div class="sols sols--3">
+        ${sol({ tag: 'Classifieds', title: 'Sell it. Find it. Say it.', copy: 'Fixed 60 &times; 60 mm boxes, sixteen to a page. Sales, services and notices.', price: true, cls: 'sol--wide',
+          extra: adClassifieds() })}
         ${sol({ tag: 'Recruitment', title: 'Hire locally.', copy: 'Your vacancy in the paper and on Job Watch online, in front of Clare&rsquo;s workforce.' })}
         ${sol({ tag: 'Planning notices', title: 'Notices, done right.', copy: 'Planning and public notices, set to format and published on time.', price: true })}
         ${sol({ tag: 'Inserts', title: 'Your leaflet, in their hands.', copy: 'Flyers, brochures and menus delivered inside the paper.' })}
