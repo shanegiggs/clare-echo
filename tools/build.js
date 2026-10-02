@@ -1549,7 +1549,6 @@ const AD_ONLINE = [
   { id: 'spon', name: 'Sponsored article', size: '1,000+ views', mob: 'Guaranteed' }
 ];
 
-const AD_GOALS = ['Brand awareness', 'Launching a business', 'Promoting a product', 'Hiring'];
 const AD_INTERESTS = ['Print display', 'Online', 'Sponsored article', 'Classifieds', 'Recruitment',
   'Planning notice', 'Supplements', 'Inserts', 'Not sure yet'];
 
@@ -1834,9 +1833,7 @@ ${siteHeader('')}
         </div>
         <div class="build-side">
           <p class="build-label">Whatever the goal</p>
-          <ul class="build-goals">
-            ${AD_GOALS.map(g => `<li>${ico.check}${g}</li>`).join('\n            ')}
-          </ul>
+          <p class="build-line">Every business is different. So is every campaign.</p>
           <a class="btn btn--paper btn--lg" href="#enquire">Start your campaign${ico.arrow}</a>
         </div>
       </div>

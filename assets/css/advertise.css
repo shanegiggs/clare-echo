@@ -340,10 +340,7 @@
   color:rgba(255,255,255,.86);max-width:44ch;letter-spacing:-.012em;}
 .build-side{background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.2);border-radius:12px;padding:26px;}
 .build-label{font-size:11px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.72);}
-.build-goals{display:grid;gap:10px;margin:16px 0 24px;}
-.build-goals li{display:flex;align-items:center;gap:10px;font-size:16px;font-weight:700;letter-spacing:-.015em;}
-.build-goals svg{width:20px;height:20px;padding:3px;border-radius:50%;background:#fff;fill:none;stroke:var(--blue);
-  stroke-width:3.2;stroke-linecap:round;stroke-linejoin:round;flex:0 0 auto;}
+.build-line{margin:14px 0 24px;font-size:clamp(20px,2vw,26px);font-weight:800;letter-spacing:-.03em;line-height:1.15;text-wrap:balance;}
 .build-side .btn{width:100%;}
 
 /* ---------- 5. Design, deadlines & specs ---------- */
