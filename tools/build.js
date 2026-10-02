@@ -1672,7 +1672,7 @@ function buildAdvertise() {
           <h3>${o.title}</h3>
           <p class="sol-copy">${o.copy}</p>
           ${o.extra || ''}
-          ${o.price ? `<p class="sol-price">From <b>&euro;XX</b> ${tbc('Price TBC')}</p>` : ''}
+          ${o.price ? `<p class="sol-price">${o.price.from ? 'From ' : ''}<b>&euro;${o.price.amount}</b>${o.price.vat}</p>` : ''}
         </article>`;
 
   return head({
@@ -1807,12 +1807,12 @@ ${siteHeader('')}
 
       <h3 class="sol-group">In print</h3>
       <div class="sols sols--3">
-        ${sol({ tag: 'Classifieds', title: 'Sell it. Find it. Say it.', copy: 'Fixed 60 &times; 60 mm boxes, sixteen to a page. Sales, services and notices.', price: true, cls: 'sol--wide',
+        ${sol({ tag: 'Classifieds', title: 'Sell it. Find it. Say it.', copy: 'Fixed 60 &times; 60 mm boxes, sixteen to a page. Sales, services and notices.', price: { from: true, amount: 20, vat: 'ex VAT' }, cls: 'sol--wide',
           extra: adClassifieds() })}
         ${sol({ tag: 'Recruitment', title: 'Hire locally.', copy: 'Your vacancy in the paper and on Job Watch online, in front of Clare&rsquo;s workforce.' })}
-        ${sol({ tag: 'Planning notices', title: 'Notices, done right.', copy: 'Planning and public notices, set to format and published on time.', price: true })}
+        ${sol({ tag: 'Planning notices', title: 'Notices, done right.', copy: 'Planning and public notices, set to format and published on time.', price: { amount: 50, vat: 'inc VAT' } })}
         ${sol({ tag: 'Inserts', title: 'Your leaflet, in their hands.', copy: 'Flyers, brochures and menus delivered inside the paper.' })}
-        ${sol({ tag: 'Supplements', title: 'Features readers keep.', copy: 'Themed pull-outs built around your sector &mdash; with space to tell your story.', cls: 'sol--wide',
+        ${sol({ tag: 'Features &amp; supplements', title: 'Features readers keep.', copy: 'Themed features built around your sector &mdash; with space to tell your story.', cls: 'sol--wide',
           extra: `<div class="ad-covers">
             ${adCover('Weddings', 'rose')}
             ${adCover('Farming', 'green')}
