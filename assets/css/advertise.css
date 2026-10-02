@@ -283,7 +283,7 @@
   column-gap:clamp(24px,3.4vw,48px);align-items:start;}
 .sol--wide > .sol-tag,.sol--wide > h3,.sol--wide > .sol-copy,.sol--wide > .sol-note{grid-column:1;}
 .sol--wide > .sol-price{grid-column:1;}
-.sol--wide > .ad-covers{grid-column:2;grid-row:1 / span 5;}
+.sol--wide > .feat-fan{grid-column:2;grid-row:1 / span 5;}
 
 /* planner: the classifieds page, shown for the two classified sizes */
 .pl-cls{display:none;position:absolute;left:0;right:0;bottom:0;z-index:2;background:var(--paper);padding-top:6px;}
@@ -312,23 +312,20 @@
 .pl-panel--print:has(input[value="classL"]:checked) .sz-l{display:block;}
 .sol-note{margin-top:16px;font-size:12.5px;color:var(--slate);display:flex;gap:8px;align-items:center;flex-wrap:wrap;}
 
-.ad-covers{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:clamp(10px,1.4vw,16px);margin:0;}
-.ad-cover{margin:0;aspect-ratio:289/380;display:flex;flex-direction:column;background:var(--paper);
-  border-radius:3px;padding:7%;box-shadow:0 1px 0 var(--line),0 14px 30px -18px rgba(10,12,14,.45);
-  border:1px solid var(--line);transition:transform .3s var(--ease);}
-.sol:hover .ad-cover:nth-child(odd){transform:rotate(-1.2deg) translateY(-3px);}
-.sol:hover .ad-cover:nth-child(even){transform:rotate(1.2deg) translateY(-3px);}
-.ad-cover-top{display:flex;align-items:center;justify-content:space-between;gap:6px;padding-bottom:6%;
-  border-bottom:1.5px solid var(--ink);}
-.ad-cover-top .logo{--logo-h:clamp(10px,1.1vw,14px);}
-.ad-cover-top span{font-size:7.5px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--slate);}
-.ad-cover-pic{flex:1;margin-top:8%;border-radius:2px;background:
-  radial-gradient(70% 60% at 30% 30%,rgba(255,255,255,.35),transparent 60%),var(--tone);}
-.ad-cover p{margin-top:8%;font-size:clamp(14px,1.5vw,19px);font-weight:800;letter-spacing:-.03em;line-height:1.05;color:var(--tone);}
-.ad-cover--rose{--tone:#B4466B;}
-.ad-cover--green{--tone:#3D7A4C;}
-.ad-cover--blue{--tone:#0080FF;}
-.ad-cover--red{--tone:#B3261E;}
+/* features collage: five covers fanned and overlapping, the middle one on
+   top; hovering a cover lifts and straightens it */
+.feat-fan{display:flex;justify-content:center;align-items:center;padding:14px 4% 18px;}
+.feat-fan figure{margin:0 0 0 -5%;flex:0 0 24%;aspect-ratio:4/5;border-radius:4px;overflow:hidden;background:var(--wash-2);
+  box-shadow:0 2px 4px rgba(10,12,14,.08),0 18px 36px -16px rgba(10,12,14,.45);border:3px solid #fff;
+  transform:rotate(var(--r,0deg)) translateY(var(--y,0));transition:transform .35s var(--ease),box-shadow .35s var(--ease);}
+.feat-fan figure:first-child{margin-left:0;}
+.feat-fan img{width:100%;height:100%;object-fit:cover;object-position:50% 0;}
+.feat-fan figure:nth-child(1){--r:-7deg;--y:14px;z-index:1;}
+.feat-fan figure:nth-child(2){--r:-3.5deg;--y:4px;z-index:2;}
+.feat-fan figure:nth-child(3){--r:0deg;--y:-6px;z-index:4;flex-basis:27%;}
+.feat-fan figure:nth-child(4){--r:3.5deg;--y:4px;z-index:3;}
+.feat-fan figure:nth-child(5){--r:7deg;--y:14px;z-index:2;}
+.feat-fan figure:hover{--r:0deg;--y:-14px;z-index:5;box-shadow:0 2px 4px rgba(10,12,14,.1),0 28px 50px -18px rgba(10,12,14,.55);}
 
 .build{position:relative;overflow:hidden;margin-top:clamp(44px,5vw,64px);border-radius:16px;color:#fff;
   padding:clamp(30px,4.4vw,56px);display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,1fr);
@@ -450,7 +447,7 @@
   .sols{grid-template-columns:repeat(2,minmax(0,1fr));}
   .sol--half{grid-column:span 1;}
   .sol--wide{grid-template-columns:minmax(0,1fr);}
-  .sol--wide > .ad-covers{grid-column:1;grid-row:auto;margin-top:22px;}
+  .sol--wide > .feat-fan{grid-column:1;grid-row:auto;margin-top:18px;}
   .build{grid-template-columns:minmax(0,1fr);}
   .ad-cta-grid{grid-template-columns:minmax(0,1fr);}
   .quote{grid-template-columns:minmax(0,1fr);}
@@ -496,7 +493,6 @@
   .pl-page{width:min(100%,260px);}
   .examples .ad-ph{aspect-ratio:auto;min-height:120px;}
   .sols{grid-template-columns:minmax(0,1fr);}
-  .ad-covers{grid-template-columns:repeat(2,minmax(0,1fr));}
   .pl-browser{margin-right:18%;}
   .team{grid-template-columns:minmax(0,1fr);}
   .person-pic,.person--office .office-pic{aspect-ratio:16/10;}

@@ -1671,14 +1671,18 @@ const adClassPage = () => `<div class="pl-cls">
                   </div>
                 </div>`;
 
-// mock supplement covers — stand-ins until the real ones are photographed
-function adCover(title, tone) {
-  return `<figure class="ad-cover ad-cover--${tone}" aria-hidden="true">
-              <div class="ad-cover-top">${logo()}<span>Supplement</span></div>
-              <div class="ad-cover-pic"></div>
-              <p>${title}</p>
-            </figure>`;
-}
+/* Real feature covers, fanned as a collage. Order puts the strongest
+   cover in the middle, where it sits on top. */
+const AD_FEATURES = [
+  { img: 'feat-live-clare-summer.webp', alt: 'Live Clare Summer magazine cover, a publication of The Clare Echo' },
+  { img: 'feat-cahercalla-30-years.webp', alt: 'Cahercalla Community Care, celebrating 30 years' },
+  { img: 'feat-christmas-parties.webp', alt: 'The Clare Echo Christmas Parties 2026 feature' },
+  { img: 'feat-enterprise-insider.webp', alt: 'Enterprise Insider: Clare and the MidWest, from The Clare Echo' },
+  { img: 'feat-clare-1995.webp', alt: 'Clare 1995 hurling anniversary feature' }
+];
+const adFeatures = () => `<div class="feat-fan">
+            ${AD_FEATURES.map(f => `<figure><img src="{{B}}assets/img/${f.img}" alt="${f.alt}" loading="lazy" decoding="async"></figure>`).join('\n            ')}
+          </div>`;
 
 function buildAdvertise() {
   const sol = (o) => `<article class="sol${o.cls ? ' ' + o.cls : ''}">
@@ -1826,13 +1830,7 @@ ${siteHeader('')}
         ${sol({ tag: 'Planning notices', title: 'Notices, done right.', copy: 'Planning and public notices, set to format and published on time.', price: { amount: 50, vat: 'inc VAT' } })}
         ${sol({ tag: 'Inserts', title: 'Your leaflet, in their hands.', copy: 'Flyers, brochures and menus delivered inside the paper.' })}
         ${sol({ tag: 'Features &amp; supplements', title: 'Features readers keep.', copy: 'A diverse range of themed features &mdash; with space to tell your story.', cls: 'sol--wide',
-          extra: `<div class="ad-covers">
-            ${adCover('Weddings', 'rose')}
-            ${adCover('Farming', 'green')}
-            ${adCover('Back to School', 'blue')}
-            ${adCover('Christmas', 'red')}
-          </div>
-          <p class="sol-note">${tbc('Sample covers')} Replace with photographs of real supplements.</p>` })}
+          extra: adFeatures() })}
       </div>
 
       <h3 class="sol-group">Online</h3>
