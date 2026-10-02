@@ -1655,12 +1655,12 @@ ${siteHeader('')}
     <div class="wrap">
       <div class="ad-hero-grid">
         <div class="ad-hero-copy">
-          <p class="kicker kicker--paper">Advertise with The Clare Echo</p>
+          <p class="kicker">Advertise with The Clare Echo</p>
           <h1 id="ad-title">Get seen in every corner of Clare.</h1>
           <p class="ad-lede">In print every Thursday. Online every hour. One local team to plan, design and deliver your campaign.</p>
           <div class="ad-hero-cta">
             <a class="btn btn--primary btn--lg" href="#enquire">Enquire now${ico.arrow}</a>
-            <a class="btn btn--line btn--lg" href="${AD_PHONE.href}">${adIco.phone}Call ${AD_PHONE.label}</a>
+            <a class="btn btn--ghost btn--lg" href="${AD_PHONE.href}">${adIco.phone}Call ${AD_PHONE.label}</a>
           </div>
         </div>
         <!-- Swap for the showreel: a <video> or YouTube embed at 16:9 drops straight in. -->
