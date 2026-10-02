@@ -36,23 +36,19 @@ Layout is a hairline-ruled editorial grid: rules sit in the *middle of the colum
 
 ## Header
 
-Three tiers, on a client reference: a black **utility bar** (date, e-paper, job watch,
-directory, a blue Subscribe chip, log in), a blue **brand bar** with the burger left, the
-white mark centred and search right, and a white **section row** in caps with pipe rules.
+Built to the Echo's own nav design. Desktop: a dark **utility bar** (Job Watch, Digital
+Edition, Advertise), then a white **sticky bar** with the blue logo tile, the sections
+inline, and Advertise, a gold **Subscribe** pill and a sign-in button on the right.
+Mobile: burger, logo tile, Subscribe and sign-in, with the sections in a swipeable row
+underneath (Advertise first, in blue).
 
-The reference came in two variants — grey-on-white utility bar and white-on-black. Black
-won: the grey version sits near 4:1 at 11px caps, the black one clears 9:1. The compact
-scale won too, taking the header from ~210px to 139px.
+The logo tile (`--tile`, 100px / 70px) is deliberately taller than the bar
+(`--head-h`, 80px / 64px), so it hangs below it; `#main` gets the difference as top
+padding so it never crowds a heading. Once the bar sticks (`.is-stuck`, set by an
+IntersectionObserver in `main.js`), the tile tucks back to the bar's height.
 
-The **brand bar is the sticky element**, not the section row: it keeps the mark, search
-and the burger (which opens every section) in reach, while the section row is free to
-scroll away. The burger is not redundant with the visible sections — the row shows the
-main ones, the drawer has the lot.
-
-News and Sport carry **dropdowns** (`SUBNAV` in `tools/build.js`). These are desktop-only
-by necessity: below 1081px the section row scrolls horizontally, and an `overflow` container
-cannot show an overflowing panel — so `.seclist` only drops its overflow at the wide
-breakpoint, and the drawer carries the same sub-sections everywhere else.
+News and Sport carry **dropdowns** (`SUBNAV` in `tools/build.js`) on desktop; on mobile
+the drawer carries the same sub-sections. Search lives in the drawer.
 
 The Echo's WordPress has no taxonomy for most sub-sections yet, so each `topic/*` page
 matches the real story text by place name or subject. Every one of the 16 is populated

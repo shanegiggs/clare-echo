@@ -280,45 +280,58 @@ ${(o.css || []).map(c => `<link rel="stylesheet" href="{{B}}assets/css/${c}.css"
 ${logoSprite()}`;
 }
 
+/* Header, on the Echo's own nav design: a dark utility bar (desktop), a
+   white sticky bar with the blue logo tile hanging just below it, sections
+   inline on desktop; on mobile the sections drop to a swipeable row. */
+const HDR_ICO = {
+  burger: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 6.5h11M4 12h16M4 17.5h8"/></svg>',
+  sparkle: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3.5l1.9 5.6 5.6 1.9-5.6 1.9L12 18.5l-1.9-5.6L4.5 11l5.6-1.9L12 3.5z"/></svg>'
+};
+const HDR_NAV = NAV.filter(s => !s.premium);
+const navHref = s => s.href ? '{{B}}' + s.href : sectionUrl('{{B}}', s.slug);
+
 function utilbar() {
   return `<div class="util">
   <div class="wrap">
-    <span class="util-date" data-today>Thursday 27 August 2026</span>
     <nav class="util-links" aria-label="Reader services">
-      <a href="{{B}}obituaries.html">Obituaries</a>
-      <a href="{{B}}digital-edition.html">E-Paper</a>
       <a href="{{B}}subscribe.html">Job Watch</a>
-      <a class="util-cta" href="{{B}}subscribe.html">Subscribe</a>
-      <a href="{{B}}subscribe.html">Log in</a>
+      <a href="{{B}}digital-edition.html">Digital Edition</a>
+      <a href="{{B}}advertise.html">Advertise</a>
     </nav>
   </div>
 </div>`;
 }
 
-function brandbar() {
-  return `<div class="brandbar">
-  <div class="wrap">
-    <div class="bb-left">
-      <button class="bb-btn" id="burger" aria-label="Open menu" aria-expanded="false" aria-controls="drawer">${ico.burger}</button>
-    </div>
-    <a href="{{B}}index.html" aria-label="The Clare Echo — home">${logo(true)}</a>
-    <div class="bb-right">
-      <button class="bb-btn" data-search-open aria-label="Search the Echo">${ico.search}</button>
+function brandbar(active) {
+  return `<header class="brandbar">
+  <div class="wrap hdr">
+    <button class="hdr-burger" id="burger" aria-label="Open menu" aria-expanded="false" aria-controls="drawer">${HDR_ICO.burger}</button>
+    <a class="hdr-logo" href="{{B}}index.html" aria-label="The Clare Echo — home">${logo(true, 's')}</a>
+    <nav class="hdr-nav" aria-label="Sections">
+      ${HDR_NAV.map(s => {
+        const on = active === s.slug;
+        const link = `<a href="${navHref(s)}"${on ? ' class="is-active" aria-current="page"' : ''}>${esc(s.name)}</a>`;
+        return SUBNAV[s.slug] ? `<div class="sec-item has-sub">${link}${subMenu(s.slug)}</div>` : link;
+      }).join('\n      ')}
+    </nav>
+    <div class="hdr-actions">
+      <a class="hdr-ad" href="{{B}}advertise.html">Advertise</a>
+      <a class="hdr-sub" href="{{B}}subscribe.html">${HDR_ICO.sparkle}Subscribe</a>
+      <a class="hdr-user" href="{{B}}subscribe.html" aria-label="Sign in">${ico.user}</a>
     </div>
   </div>
-</div>`;
+</header>`;
 }
 
+// mobile only: the sections as a swipeable row under the bar
 function secnav(active) {
   return `<nav class="secnav" aria-label="Sections">
   <div class="wrap">
-    <a class="sec-ad" href="{{B}}advertise.html">Advertise</a>
     <div class="seclist">
-      ${NAV.map(s => {
-        const cls = [s.premium ? 'is-premium' : '', active === s.slug ? 'is-active' : ''].filter(Boolean).join(' ');
-        const href = s.href ? '{{B}}' + s.href : sectionUrl('{{B}}', s.slug);
-        const link = `<a href="${href}"${cls ? ` class="${cls}"` : ''}${active === s.slug ? ' aria-current="page"' : ''}>${esc(s.name)}</a>`;
-        return SUBNAV[s.slug] ? `<div class="sec-item has-sub">${link}${subMenu(s.slug)}</div>` : link;
+      <a class="sec-ad" href="{{B}}advertise.html">Advertise</a>
+      ${HDR_NAV.map(s => {
+        const on = active === s.slug;
+        return `<a href="${navHref(s)}"${on ? ' class="is-active" aria-current="page"' : ''}>${esc(s.name)}</a>`;
       }).join('\n      ')}
     </div>
   </div>
@@ -326,7 +339,7 @@ function secnav(active) {
 }
 
 // one call site per page instead of three
-const siteHeader = active => `${utilbar()}\n${brandbar()}\n${secnav(active)}`;
+const siteHeader = active => `${utilbar()}\n${brandbar(active)}\n${secnav(active)}`;
 
 function ticker(items) {
   return `<div class="ticker">
@@ -363,6 +376,7 @@ function drawer() {
       }).join('\n      ')}
     </nav>
     <div class="drawer-sub">
+      <button type="button" class="drawer-search" data-search-open>${ico.search}Search the Echo</button>
       <a href="{{B}}digital-edition.html">Digital Edition</a>
       <a href="{{B}}subscribe.html">Job Watch</a>
       <a href="{{B}}obituaries.html">Obituaries &amp; Notices</a>

@@ -23,31 +23,18 @@
 <div class="progress" id="progress"></div>
 <div class="util">
   <div class="wrap">
-    <span class="util-date" data-today>Thursday 27 August 2026</span>
     <nav class="util-links" aria-label="Reader services">
-      <a href="../obituaries.html">Obituaries</a>
-      <a href="../digital-edition.html">E-Paper</a>
       <a href="../subscribe.html">Job Watch</a>
-      <a class="util-cta" href="../subscribe.html">Subscribe</a>
-      <a href="../subscribe.html">Log in</a>
+      <a href="../digital-edition.html">Digital Edition</a>
+      <a href="../advertise.html">Advertise</a>
     </nav>
   </div>
 </div>
-<div class="brandbar">
-  <div class="wrap">
-    <div class="bb-left">
-      <button class="bb-btn" id="burger" aria-label="Open menu" aria-expanded="false" aria-controls="drawer"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button>
-    </div>
-    <a href="../index.html" aria-label="The Clare Echo — home"><span class="logo logo--invert"><svg viewBox="0 0 1044.4 202.6" aria-hidden="true" focusable="false"><use href="#lg-h"/></svg></span></a>
-    <div class="bb-right">
-      <button class="bb-btn" data-search-open aria-label="Search the Echo"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.6-3.6"/></svg></button>
-    </div>
-  </div>
-</div>
-<nav class="secnav" aria-label="Sections">
-  <div class="wrap">
-    <a class="sec-ad" href="../advertise.html">Advertise</a>
-    <div class="seclist">
+<header class="brandbar">
+  <div class="wrap hdr">
+    <button class="hdr-burger" id="burger" aria-label="Open menu" aria-expanded="false" aria-controls="drawer"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 6.5h11M4 12h16M4 17.5h8"/></svg></button>
+    <a class="hdr-logo" href="../index.html" aria-label="The Clare Echo — home"><span class="logo logo--invert"><svg viewBox="0 0 1185.3 613" aria-hidden="true" focusable="false"><use href="#lg-s"/></svg></span></a>
+    <nav class="hdr-nav" aria-label="Sections">
       <div class="sec-item has-sub"><a href="../section/news.html" class="is-active" aria-current="page">News</a><div class="submenu"><div class="submenu-in">
         <a class="submenu-top" href="../topic/latest-news.html">Latest News</a>
         <div class="submenu-group"><p>Regional</p>
@@ -75,7 +62,23 @@
       <a href="../section/business.html">Business</a>
       <a href="../section/podcasts.html">Podcasts</a>
       <a href="../contributors.html">Contributors</a>
-      <a href="../section/premium.html" class="is-premium">Premium</a>
+    </nav>
+    <div class="hdr-actions">
+      <a class="hdr-ad" href="../advertise.html">Advertise</a>
+      <a class="hdr-sub" href="../subscribe.html"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3.5l1.9 5.6 5.6 1.9-5.6 1.9L12 18.5l-1.9-5.6L4.5 11l5.6-1.9L12 3.5z"/></svg>Subscribe</a>
+      <a class="hdr-user" href="../subscribe.html" aria-label="Sign in"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8.5" r="3.6"/><path d="M4.5 20a7.5 7.5 0 0 1 15 0"/></svg></a>
+    </div>
+  </div>
+</header>
+<nav class="secnav" aria-label="Sections">
+  <div class="wrap">
+    <div class="seclist">
+      <a class="sec-ad" href="../advertise.html">Advertise</a>
+      <a href="../section/news.html" class="is-active" aria-current="page">News</a>
+      <a href="../section/sport.html">Sport</a>
+      <a href="../section/business.html">Business</a>
+      <a href="../section/podcasts.html">Podcasts</a>
+      <a href="../contributors.html">Contributors</a>
     </div>
   </div>
 </nav>
@@ -264,6 +267,7 @@
       <a href="../section/premium.html" class="is-premium">Premium<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg></a>
     </nav>
     <div class="drawer-sub">
+      <button type="button" class="drawer-search" data-search-open><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.6-3.6"/></svg>Search the Echo</button>
       <a href="../digital-edition.html">Digital Edition</a>
       <a href="../subscribe.html">Job Watch</a>
       <a href="../obituaries.html">Obituaries &amp; Notices</a>

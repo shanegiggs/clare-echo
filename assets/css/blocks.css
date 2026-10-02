@@ -448,14 +448,12 @@ a:hover .play--sm{transform:translate(-50%,-50%) scale(1.09);}
 .foot-bot a:hover{color:#fff;}
 
 /* ---------- section dropdowns ----------
-   The row scrolls horizontally at narrow widths, and an overflow container
-   cannot show an overflowing panel — so dropdowns are a desktop affordance
-   and the burger drawer carries the same sub-sections everywhere else. */
+   Desktop only: on narrow screens the sections are a scrolling row, which
+   cannot show an overflowing panel, so the drawer carries them instead. */
 .sec-item{position:relative;display:flex;align-items:center;}
 .submenu{display:none;}
 
 @media (min-width:1081px){
-  .seclist{overflow:visible;-webkit-mask-image:none;mask-image:none;}
   .submenu{display:block;position:absolute;top:100%;left:0;z-index:70;
     min-width:230px;padding-top:6px;
     opacity:0;visibility:hidden;transform:translateY(-5px);
@@ -521,6 +519,10 @@ a:hover .play--sm{transform:translate(-50%,-50%) scale(1.09);}
 .drawer-sub{margin-top:26px;display:grid;gap:13px;}
 .drawer-sub a{font-size:14px;color:var(--slate-dark);font-weight:500;}
 .drawer-sub a:hover{color:var(--blue);}
+.drawer-search{display:flex;align-items:center;gap:10px;height:44px;padding:0 14px;border-radius:999px;
+  border:1px solid var(--line-strong);font-size:14.5px;font-weight:600;color:var(--slate-dark);text-align:left;}
+.drawer-search:hover{border-color:var(--blue);color:var(--blue);}
+.drawer-search svg{width:17px;height:17px;fill:none;stroke:currentColor;stroke-width:2.2;stroke-linecap:round;}
 .drawer-foot{padding:18px var(--gut) 24px;border-top:1px solid var(--line);display:grid;gap:10px;background:var(--wash);}
 
 /* ---------- Search overlay ---------- */

@@ -430,10 +430,12 @@
 .adv-ok.is-on{display:flex;}
 .adv-ok svg{width:22px;height:22px;fill:none;stroke:currentColor;stroke-width:2.6;stroke-linecap:round;stroke-linejoin:round;}
 
-/* Desktop: header + hero fill the first screen exactly (header is 145px:
-   34 utility + 64 brand bar + 46 section row + rule), stats on the fold. */
+/* Desktop: header + hero fill the first screen exactly (header is 130px:
+   50 utility bar + 80 white bar), stats on the fold. The hero's own top
+   padding clears the logo tile, so it skips main's overhang allowance. */
+#main.adv{padding-top:0;}
 @media (min-width:1081px){
-  .ad-hero{min-height:calc(100vh - 145px);min-height:calc(100svh - 145px);display:flex;flex-direction:column;}
+  .ad-hero{min-height:calc(100vh - 130px);min-height:calc(100svh - 130px);display:flex;flex-direction:column;}
   .ad-hero > .wrap{flex:1;display:flex;flex-direction:column;width:100%;}
   .ad-hero-grid{flex:1;padding-bottom:clamp(32px,5vh,64px);}
   .ad-stats{margin-top:auto;}
