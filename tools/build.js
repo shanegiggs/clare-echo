@@ -1684,6 +1684,15 @@ const adFeatures = () => `<div class="feat-fan">
             ${AD_FEATURES.map(f => `<figure><img src="{{B}}assets/img/${f.img}" alt="${f.alt}" loading="lazy" decoding="async"></figure>`).join('\n            ')}
           </div>`;
 
+// adverts designed in-house, shown as a mosaic in the design service card
+const AD_DESIGNS = [
+  { img: 'ad-clare-v-limerick.webp', alt: 'Clare v Limerick, Munster Hurling Championship final' },
+  { img: 'ad-dng-osullivan-hurley.webp', alt: 'DNG O&rsquo;Sullivan Hurley, Thinking of selling?' },
+  { img: 'ad-ger-browne-eire-wwii.webp', alt: 'Ger Browne, &Eacute;ire in WWII: The True Story' },
+  { img: 'ad-munster-footgolf.webp', alt: 'Munster Footgolf, fun for all ages and abilities', wide: true },
+  { img: 'ad-hollys-pharmacy.webp', alt: 'Holly&rsquo;s Pharmacy, amazing value on magnesium' }
+];
+
 function buildAdvertise() {
   const sol = (o) => `<article class="sol${o.cls ? ' ' + o.cls : ''}">
           <p class="sol-tag">${o.tag}</p>
@@ -1859,15 +1868,19 @@ ${siteHeader('')}
     <div class="wrap">
       ${adSecHead('04', 'Design, deadlines &amp; specs', 'Everything you need to book with confidence.')}
       <div class="specs">
-        <article class="spec-card spec-card--design">
-          <span class="why-ico">${adIco.pen}</span>
-          <h3>Design service</h3>
-          <p>No artwork? Our in-house team designs your ad for print and web.</p>
-          ${adPh('Collage of adverts we&rsquo;ve designed', 'ad-ph--collage')}
-          <a class="btn btn--ghost" href="#" aria-disabled="true">${adIco.down}Media pack (PDF) ${tbc('To come')}</a>
+        <article class="spec-card spec-card--wide spec-card--design">
+          <div class="design-copy">
+            <span class="why-ico">${adIco.pen}</span>
+            <h3>Design service</h3>
+            <p>No artwork? Our in-house team designs your ad for print and web.</p>
+            <a class="btn btn--ghost" href="#" aria-disabled="true">${adIco.down}Media pack (PDF) ${tbc('To come')}</a>
+          </div>
+          <div class="ad-mosaic">
+            ${AD_DESIGNS.map(d => `<a${d.wide ? ' class="is-wide"' : ''} href="{{B}}assets/img/${d.img}" target="_blank" rel="noopener" aria-label="View full advert: ${d.alt}"><img src="{{B}}assets/img/${d.img}" alt="${d.alt}" loading="lazy" decoding="async"></a>`).join('\n            ')}
+          </div>
         </article>
 
-        <article class="spec-card">
+        <article class="spec-card spec-card--wide spec-card--dl">
           <h3>Deadlines</h3>
           <p>The paper is out free every Thursday.</p>
           <ol class="dl-week">

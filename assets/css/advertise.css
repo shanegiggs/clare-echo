@@ -347,10 +347,18 @@
 .spec-card h3{font-size:21px;letter-spacing:-.026em;}
 .spec-card--design h3{margin-top:18px;}
 .spec-card > p,.spec-cols p{margin-top:8px;font-size:14.5px;line-height:1.55;color:var(--slate-dark);}
-.spec-card--design{display:flex;flex-direction:column;align-items:flex-start;}
-.spec-card--design .btn{margin-top:auto;}
-.spec-card--design .ad-ph--collage{width:100%;margin:22px 0 20px;min-height:0;aspect-ratio:16/9;}
+.spec-card--design{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.7fr);gap:clamp(24px,4vw,56px);align-items:center;}
+.design-copy{display:flex;flex-direction:column;align-items:flex-start;}
+.design-copy .btn{margin-top:24px;}
 .spec-card--design .btn .tbc{margin-left:4px;}
+/* mosaic: three portraits over a landscape and a squarer ad; each opens full size */
+.ad-mosaic{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:clamp(8px,1vw,12px);width:100%;max-width:680px;justify-self:end;}
+.ad-mosaic a{position:relative;grid-column:span 2;aspect-ratio:4/5;border-radius:6px;overflow:hidden;background:var(--wash-2);
+  box-shadow:0 1px 2px rgba(10,12,14,.08),0 12px 24px -14px rgba(10,12,14,.4);}
+.ad-mosaic a:last-child{aspect-ratio:800/878;}
+.ad-mosaic a.is-wide{grid-column:span 4;aspect-ratio:auto;}
+.ad-mosaic img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transition:transform .5s var(--ease);}
+.ad-mosaic a:hover img{transform:scale(1.04);}
 .dl-week{margin:18px 0 0;padding:0;list-style:none;border-top:2px solid var(--ink);}
 .dl-week li{display:grid;grid-template-columns:52px minmax(0,1fr) auto;gap:14px;align-items:center;
   padding:14px 0;border-bottom:1px solid var(--line);}
@@ -360,6 +368,16 @@
 .dl-what b{display:block;font-size:15px;font-weight:750;letter-spacing:-.015em;color:var(--ink);}
 .dl-time{font-size:20px;font-weight:800;letter-spacing:-.03em;font-variant-numeric:tabular-nums;}
 .dl-week .is-out .dl-day{background:var(--blue);color:#fff;}
+/* full-width card: the week runs left to right */
+@media (min-width:901px){
+  .spec-card--dl .dl-week{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));}
+  .spec-card--dl .dl-week li{grid-template-columns:52px minmax(0,1fr);grid-template-areas:"day time" "what what";
+    row-gap:14px;align-items:center;padding:20px 22px 6px 0;border-bottom:0;}
+  .spec-card--dl .dl-week li + li{padding-left:22px;border-left:1px solid var(--line);}
+  .spec-card--dl .dl-day{grid-area:day;}
+  .spec-card--dl .dl-time{grid-area:time;justify-self:end;font-size:24px;}
+  .spec-card--dl .dl-what{grid-area:what;}
+}
 .spec-cols{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:clamp(24px,4vw,56px);}
 .spec-table{width:100%;border-collapse:collapse;margin-top:18px;font-size:14px;font-variant-numeric:tabular-nums;}
 .spec-table th,.spec-table td{text-align:left;padding:10px 12px 10px 0;border-bottom:1px solid var(--line);vertical-align:middle;}
@@ -466,6 +484,8 @@
   .pl-stage{min-height:0;}
   .aud{grid-template-columns:minmax(0,1fr);}
   .specs,.spec-cols{grid-template-columns:minmax(0,1fr);}
+  .spec-card--design{grid-template-columns:minmax(0,1fr);}
+  .ad-mosaic{justify-self:stretch;max-width:none;}
   .team{grid-template-columns:repeat(2,minmax(0,1fr));}
 }
 
