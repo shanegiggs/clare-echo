@@ -264,6 +264,42 @@
     });
   })();
 
+  /* ---------- advertise: in-page nav follows the reader ---------- */
+  (function () {
+    var links = $$('.ad-jump-links a');
+    if (!links.length || !('IntersectionObserver' in window)) return;
+    var byId = {};
+    links.forEach(function (a) { byId[a.getAttribute('href').slice(1)] = a; });
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) {
+        if (!e.isIntersecting) return;
+        links.forEach(function (a) { a.classList.remove('is-on'); a.removeAttribute('aria-current'); });
+        var on = byId[e.target.id];
+        if (on) {
+          on.classList.add('is-on');
+          on.setAttribute('aria-current', 'location');
+          // keep the active link in view on the scrolling mobile rail
+          var rail = on.parentNode;
+          rail.scrollTo({ left: on.offsetLeft - 16, behavior: reduced ? 'auto' : 'smooth' });
+        }
+      });
+    }, { rootMargin: '-45% 0px -50% 0px' });
+    Object.keys(byId).forEach(function (id) {
+      var el = document.getElementById(id);
+      if (el) io.observe(el);
+    });
+  })();
+
+  /* ---------- advertise: planner size list ----------
+     On narrow screens the list becomes a sideways rail; start it on the
+     size that is lit rather than leaving it off-screen. */
+  (function () {
+    $$('.pl-list').forEach(function (list) {
+      var on = $('input:checked', list);
+      if (on) list.scrollLeft = on.parentNode.offsetLeft - 10;
+    });
+  })();
+
   /* ---------- podcast series tabs ---------- */
   (function () {
     var tabs = $$('[data-media-tab]');

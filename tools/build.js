@@ -274,7 +274,7 @@ function head(o) {
 <link rel="stylesheet" href="{{B}}assets/css/style.css">
 <link rel="stylesheet" href="{{B}}assets/css/blocks.css">
 <link rel="stylesheet" href="{{B}}assets/css/pages.css">
-</head>
+${(o.css || []).map(c => `<link rel="stylesheet" href="{{B}}assets/css/${c}.css">\n`).join('')}</head>
 <body>
 <a class="skip" href="#main">Skip to content</a>
 ${logoSprite()}`;
@@ -1483,124 +1483,445 @@ ${tail()}`;
 
 /* ---------------------------------------------------------------- statics */
 /* ---------------------------------------------------------------- advertise
-   Figures, team and office from the Echo's own advertise_with_us page. */
+   Figures, team and office from the Echo's own advertise_with_us page.
+   Anything the Echo still has to supply — prices, deadlines, photos, the
+   showreel, a testimonial — is marked on the page with .ad-ph or .tbc so it
+   cannot ship by accident looking finished. */
 const AD_TEAM = [
   { name: 'Ross Houlihan', role: 'Sales Director', email: 'ross@clareecho.ie' },
   { name: 'Kieran Murphy', role: 'Account Executive', email: 'kieran@clareecho.ie' }
 ];
+const AD_PHONE = { href: 'tel:+353851488435', label: '085 148 8435' };
+
+const AD_STATS = [
+  ['13,500+', 'papers every Thursday'],
+  ['100,000+', 'people reached weekly'],
+  ['100,000+', 'page views a week'],
+  ['0.4%', 'average click-through']
+];
+
+const AD_WHY = [
+  ['pin', 'Local expertise', 'In Ennis since 2018. We know Clare inside out.'],
+  ['people', 'Local audience', 'Readers on your doorstep, not scattered nationwide.'],
+  ['layers', 'Multi-platform', 'Print and online, planned as one campaign.'],
+  ['pen', 'Creative support', 'No artwork? Our designers will make it.'],
+  ['hand', 'Personal service', 'One account manager, start to finish.']
+];
+
+/* Print sizes in mm, from the brand guide (4.2). x/y are the ad's offset
+   inside the 265 × 325 live area, so the planner and the spec table draw
+   from one source. `front` puts a masthead on the mock page. */
+const AD_PRINT = [
+  { id: 'full', name: 'Full page', w: 265, h: 325, x: 0, y: 0 },
+  { id: 'halfh', name: 'Half page — horizontal', w: 265, h: 157, x: 0, y: 168 },
+  { id: 'halfv', name: 'Half page — vertical', w: 128, h: 325, x: 137, y: 0 },
+  { id: 'quarter', name: 'Quarter page', w: 128, h: 157, x: 137, y: 168 },
+  { id: 'eighth', name: 'Eighth page', w: 128, h: 75, x: 137, y: 250 },
+  { id: 'banner', name: 'Banner', w: 265, h: 40, x: 0, y: 285 },
+  { id: 'ftop', name: 'Front page — top', w: 128, h: 65, x: 137, y: 0, front: true },
+  { id: 'fbot', name: 'Front page — bottom', w: 82, h: 90, x: 0, y: 235, front: true }
+];
+const AD_ONLINE = [
+  { id: 'lb', name: 'Leaderboard', size: '728 × 90', mob: '320 × 50 on mobile' },
+  { id: 'bb', name: 'Billboard', size: '970 × 250', mob: '320 × 100 on mobile' },
+  { id: 'mpu', name: 'MPU', size: '300 × 250', mob: 'In-feed on mobile' },
+  { id: 'hp', name: 'Half page', size: '300 × 600', mob: 'Desktop only' },
+  { id: 'spon', name: 'Sponsored article', size: '1,000+ views', mob: 'Guaranteed' }
+];
+
+const AD_GOALS = ['Brand awareness', 'Launching a business', 'Promoting a product', 'Hiring'];
+const AD_INTERESTS = ['Print display', 'Online', 'Sponsored article', 'Classifieds', 'Recruitment',
+  'Planning notice', 'Supplements', 'Inserts', 'Not sure yet'];
+
+const adIco = {
+  pin: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-6.5-5.6-6.5-11a6.5 6.5 0 0 1 13 0c0 5.4-6.5 11-6.5 11z"/><circle cx="12" cy="10" r="2.4"/></svg>',
+  people: '<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="9" cy="8.5" r="3.2"/><path d="M3 20a6 6 0 0 1 12 0"/><circle cx="17" cy="9.5" r="2.5"/><path d="M15.5 14.6A5 5 0 0 1 21 19.5"/></svg>',
+  layers: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l9 5-9 5-9-5 9-5z"/><path d="M3 13l9 5 9-5"/></svg>',
+  pen: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20l4.2-1L19 8.2a2.1 2.1 0 0 0-3-3L5.2 16 4 20z"/><path d="M14.5 6.7l2.8 2.8"/></svg>',
+  hand: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 11V5.5a1.5 1.5 0 0 1 3 0V10"/><path d="M11 10V4.5a1.5 1.5 0 0 1 3 0V10"/><path d="M14 10V5.5a1.5 1.5 0 0 1 3 0V13"/><path d="M8 11.5a1.5 1.5 0 0 0-3 0V14a7 7 0 0 0 7 7h.5a6.5 6.5 0 0 0 4.5-6.2V13"/></svg>',
+  phone: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 4h3.5l1.8 4.4-2.3 1.4a11 11 0 0 0 6.2 6.2l1.4-2.3L20 15.5V19a1.5 1.5 0 0 1-1.6 1.5A16.5 16.5 0 0 1 3.5 5.6 1.5 1.5 0 0 1 5 4z"/></svg>',
+  mail: '<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3.5 6.5l8.5 6.5 8.5-6.5"/></svg>',
+  down: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4v12M6.5 10.5L12 16l5.5-5.5M5 20h14"/></svg>',
+  spark: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l1.9 5.6L19.5 10l-5.6 1.9L12 17.5l-1.9-5.6L4.5 10l5.6-1.4L12 3z"/><path d="M19 15l.8 2.2L22 18l-2.2.8L19 21l-.8-2.2L16 18l2.2-.8L19 15z"/></svg>',
+  pinS: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-6.5-5.6-6.5-11a6.5 6.5 0 0 1 13 0c0 5.4-6.5 11-6.5 11z"/><circle cx="12" cy="10" r="2.4"/></svg>'
+};
+
+const pct = (v, of) => +(v / of * 100).toFixed(2) + '%';
+const adBox = s => `left:${pct(s.x, 265)};top:${pct(s.y, 325)};width:${pct(s.w, 265)};height:${pct(s.h, 325)}`;
+// placeholder: a dashed frame that says what belongs there
+const adPh = (label, cls) => `<div class="ad-ph${cls ? ' ' + cls : ''}"><span class="ad-ph-tag">Placeholder</span><span class="ad-ph-label">${label}</span></div>`;
+const tbc = (t = 'TBC') => `<span class="tbc">${t}</span>`;
+
+function adSecHead(num, title, sub, paper) {
+  return `<header class="ad-sh${paper ? ' ad-sh--paper' : ''}">
+        <p class="ad-num">${num}</p>
+        <h2>${title}</h2>
+        ${sub ? `<p class="ad-sub">${sub}</p>` : ''}
+      </header>`;
+}
+
+/* Print planner: one mock page, every booked size drawn on it. The radios
+   drive it through :has(), so it works with JS off; without :has() support
+   the default (quarter) simply stays lit. */
+function adPrintPlanner() {
+  const def = 'quarter';
+  return `<div class="pl-panel pl-panel--print">
+          <fieldset class="pl-list">
+            <legend class="vh">Print advert size</legend>
+            ${AD_PRINT.map(s => `<label><input type="radio" name="pl-print" value="${s.id}"${s.id === def ? ' checked' : ''}><span><b>${s.name.replace(' — ', ' &mdash; ')}</b><em>${s.w} &times; ${s.h} mm</em></span></label>`).join('\n            ')}
+          </fieldset>
+          <div class="pl-stage" aria-hidden="true">
+            <div class="pl-page">
+              <div class="pl-live">
+                <div class="pl-mast">${logo()}</div>
+                <div class="pl-cols">${'<i></i>'.repeat(7)}</div>
+                ${AD_PRINT.map(s => `<div class="pl-ad" data-ad="${s.id}" style="${adBox(s)}"><b>Your ad</b><em>${s.w} &times; ${s.h} mm</em></div>`).join('\n                ')}
+              </div>
+            </div>
+          </div>
+        </div>`;
+}
+
+function adOnlinePlanner() {
+  const def = 'mpu';
+  return `<div class="pl-panel pl-panel--online">
+          <fieldset class="pl-list">
+            <legend class="vh">Online advert format</legend>
+            ${AD_ONLINE.map(s => `<label><input type="radio" name="pl-online" value="${s.id}"${s.id === def ? ' checked' : ''}><span><b>${s.name}</b><em>${s.size} &middot; ${s.mob}</em></span></label>`).join('\n            ')}
+          </fieldset>
+          <div class="pl-stage pl-stage--web" aria-hidden="true">
+            <div class="pl-browser">
+              <div class="pl-chrome"><i></i><i></i><i></i><span>clareecho.ie</span></div>
+              <div class="pl-site">
+                <div class="pl-bar"></div>
+                <div class="pl-slot pl-slot--lb" data-ad="lb"><b>728 &times; 90</b></div>
+                <div class="pl-slot pl-slot--bb" data-ad="bb"><b>970 &times; 250</b></div>
+                <div class="pl-body">
+                  <div class="pl-feed">
+                    <div class="pl-story pl-story--lead"></div>
+                    <div class="pl-story"></div><div class="pl-story"></div>
+                    <div class="pl-story pl-slot pl-slot--spon" data-ad="spon"><b>Sponsored</b></div>
+                    <div class="pl-story"></div>
+                  </div>
+                  <div class="pl-side">
+                    <div class="pl-slot pl-slot--mpu" data-ad="mpu"><b>300 &times; 250</b></div>
+                    <div class="pl-slot pl-slot--hp" data-ad="hp"><b>300 &times; 600</b></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="pl-phone">
+              <div class="pl-pbar"></div>
+              <div class="pl-slot pl-slot--lb" data-ad="lb"><b>320 &times; 50</b></div>
+              <div class="pl-slot pl-slot--bb" data-ad="bb"><b>320 &times; 100</b></div>
+              <div class="pl-story pl-story--lead"></div>
+              <div class="pl-slot pl-slot--mpu" data-ad="mpu"><b>300 &times; 250</b></div>
+              <div class="pl-story pl-slot pl-slot--spon" data-ad="spon"><b>Sponsored</b></div>
+              <div class="pl-story"></div>
+            </div>
+          </div>
+        </div>`;
+}
+
+// mock supplement covers — stand-ins until the real ones are photographed
+function adCover(title, tone) {
+  return `<figure class="ad-cover ad-cover--${tone}" aria-hidden="true">
+              <div class="ad-cover-top">${logo()}<span>Supplement</span></div>
+              <div class="ad-cover-pic"></div>
+              <p>${title}</p>
+            </figure>`;
+}
 
 function buildAdvertise() {
+  const sol = (o) => `<article class="sol${o.cls ? ' ' + o.cls : ''}">
+          <p class="sol-tag">${o.tag}</p>
+          <h3>${o.title}</h3>
+          <p class="sol-copy">${o.copy}</p>
+          ${o.extra || ''}
+          ${o.price ? `<p class="sol-price">From <b>&euro;XX</b> ${tbc('Price TBC')}</p>` : ''}
+        </article>`;
+
   return head({
     title: 'Advertise with us — The Clare Echo',
-    desc: "Clare's most read media title — 13,500 papers a week and 100,000 page views. Print and online advertising with The Clare Echo."
+    desc: "Reach all of Clare. 13,500 papers every Thursday and 100,000+ page views a week. Print and online advertising, designed and planned by one local team.",
+    css: ['advertise']
   }) + `
 ${siteHeader('')}
 
-<main id="main">
+<main id="main" class="adv">
 
-  <section class="sec-hero">
+  <!-- 1. Overview -->
+  <section class="ad-hero" aria-labelledby="ad-title">
     <div class="wrap">
-      <p class="kicker">Print + Online</p>
-      <h1>Advertise with us</h1>
-      <p>We are Clare&rsquo;s most read and interactive media title, in print every Thursday
-      and online every hour. Talk to us about reaching the whole county.</p>
+      <div class="ad-hero-grid">
+        <div class="ad-hero-copy">
+          <p class="kicker kicker--paper">Advertise with The Clare Echo</p>
+          <h1 id="ad-title">Get seen in every corner of Clare.</h1>
+          <p class="ad-lede">In print every Thursday. Online every hour. One local team to plan, design and deliver your campaign.</p>
+          <div class="ad-hero-cta">
+            <a class="btn btn--primary btn--lg" href="#enquire">Enquire now${ico.arrow}</a>
+            <a class="btn btn--line btn--lg" href="${AD_PHONE.href}">${adIco.phone}Call ${AD_PHONE.label}</a>
+          </div>
+        </div>
+        <!-- Swap for the showreel: a <video> or YouTube embed at 16:9 drops straight in. -->
+        <div class="ad-video">
+          <span class="ad-ph-tag">Placeholder</span>
+          <span class="ad-video-play">${ico.play}</span>
+          <span class="ad-video-cap"><b>New video</b>Why Clare advertises with the Echo &middot; 60s</span>
+        </div>
+      </div>
+
+      <dl class="ad-stats">
+        ${AD_STATS.map(([n, l]) => `<div><dt>${l}</dt><dd>${n}</dd></div>`).join('\n        ')}
+      </dl>
     </div>
   </section>
 
-  <section class="band band--tight">
+  <nav class="ad-jump" aria-label="On this page">
     <div class="wrap">
-      <div class="adv-stats">
-        <div><b>100,000+</b><span>Page views a week</span></div>
-        <div><b>100,000+</b><span>People reached every week</span></div>
-        <div><b>13,500+</b><span>Papers printed every week</span></div>
+      <div class="ad-jump-links">
+        <a href="#audience">Audience</a>
+        <a href="#why">Why the Echo</a>
+        <a href="#solutions">Solutions</a>
+        <a href="#specs">Design &amp; specs</a>
+        <a href="#team">Team</a>
       </div>
+      <a class="btn btn--primary btn--sm" href="#enquire">Enquire</a>
+    </div>
+  </nav>
 
-      <div class="notice-grid divided" style="margin-top:clamp(30px,4vw,44px)">
-        <div>
-          <div class="sec-head"><h2>Print</h2></div>
-          <p style="font-size:15px;line-height:1.65;color:var(--ink-soft)">
-            Over <b>13,500 papers printed every week</b> and read across the county &mdash;
-            Ennis, Shannon, Kilrush, Ennistymon and every parish between. Booked sizes run
-            from a full page down to a front-page banner.</p>
-          <a class="pill" style="margin-top:18px" href="{{B}}subscribe.html">See advert sizes${ico.chev}</a>
-        </div>
-        <div>
-          <div class="sec-head"><h2>Online</h2></div>
-          <p style="font-size:15px;line-height:1.65;color:var(--ink-soft)">
-            Post your content on the most viewed news website in the county, with a
-            <b>guaranteed 1,000+ page views</b> to your advert or article. Displays on
-            desktop, mobile and tablet.</p>
-        </div>
-        <div>
-          <div class="sec-head"><h2>Performance</h2></div>
-          <p style="font-size:15px;line-height:1.65;color:var(--ink-soft)">
-            Your advert has a much higher chance of being seen with us. Our average
-            <b>click-through rate is 0.4%</b> &mdash; well above the display average.</p>
-        </div>
+  <!-- 2. Audience -->
+  <section class="band ad-sec" id="audience">
+    <div class="wrap">
+      ${adSecHead('01', 'Your audience', 'Two ways in. One county.')}
+      <div class="aud">
+        <article class="aud-card">
+          <p class="aud-tag">In print</p>
+          <p class="aud-big">13,500+<span>copies every Thursday</span></p>
+          <p class="aud-copy">On shelves across the county and kept all week.</p>
+          <ul class="aud-towns" aria-label="Where it is read">
+            ${['Ennis', 'Shannon', 'Kilrush', 'Ennistymon', 'Scariff', 'Kilkee', 'Sixmilebridge', 'Gort'].map(t => `<li>${t}</li>`).join('')}
+            <li class="more">+ every parish between</li>
+          </ul>
+          ${adPh('Distribution map of Clare', 'ad-ph--map')}
+        </article>
+        <article class="aud-card">
+          <p class="aud-tag">Online</p>
+          <p class="aud-big">100,000+<span>page views a week</span></p>
+          <p class="aud-copy">Clare&rsquo;s most-read news site, on desktop, mobile and tablet.</p>
+          <ul class="aud-facts">
+            <li>${ico.check}<span><b>1,000+</b> guaranteed views per advert or article</span></li>
+            <li>${ico.check}<span><b>0.4%</b> average click-through &mdash; well above the display norm</span></li>
+          </ul>
+          ${adPh('Reader profile &mdash; age, device and location split', 'ad-ph--map')}
+        </article>
       </div>
     </div>
   </section>
 
-  <section class="band band--tight band--wash">
+  <!-- 3. Why -->
+  <section class="band band--wash ad-sec" id="why">
     <div class="wrap">
-      <div class="sec-head"><h2>Talk to one of our advertising team today</h2></div>
-      <div class="adv-team">
-        ${AD_TEAM.map(p => `<div class="adv-person">
-          <span class="av" aria-hidden="true">${esc(initials(p.name))}</span>
+      ${adSecHead('02', 'Why the Echo', 'Five reasons local businesses choose us.')}
+      <ol class="why">
+        ${AD_WHY.map(([i, t, d]) => `<li><span class="why-ico">${adIco[i]}</span><h3>${t}</h3><p>${d}</p></li>`).join('\n        ')}
+      </ol>
+
+      <figure class="quote">
+        <span class="ad-ph-tag">Placeholder testimonial</span>
+        <div class="quote-text">
+          <blockquote>&ldquo;The phone started ringing the Thursday the ad ran. The team made it easy from start to finish.&rdquo;</blockquote>
+          <figcaption>
+            <span class="quote-av" aria-hidden="true">Logo</span>
+            <span><b>Client name</b>Business, Ennis</span>
+          </figcaption>
+        </div>
+        ${adPh('Client photo or their ad')}
+      </figure>
+    </div>
+  </section>
+
+  <!-- 4. Solutions -->
+  <section class="band ad-sec" id="solutions">
+    <div class="wrap">
+      ${adSecHead('03', 'Advertising solutions', 'Print and online. Mix, match, or let us build it for you.')}
+
+      <div class="planner">
+        <div class="planner-head">
           <div>
-            <b>${esc(p.name)}</b>
-            <span>${esc(p.role)}</span>
-            <a href="mailto:${p.email}">${p.email}</a>
+            <h3>See where your ad sits</h3>
+            <p>Pick a size to see it on the page.</p>
           </div>
-        </div>`).join('\n        ')}
+          <div class="seg" role="radiogroup" aria-label="Show print or online">
+            <label><input type="radio" name="pl-mode" value="print" checked><span>Print</span></label>
+            <label><input type="radio" name="pl-mode" value="online"><span>Online</span></label>
+          </div>
+        </div>
+        ${adPrintPlanner()}
+        ${adOnlinePlanner()}
+      </div>
+
+      <div class="examples">
+        ${adPh('Example: full-page print ad')}
+        ${adPh('Example: online MPU campaign')}
+        ${adPh('Example: sponsored article')}
+      </div>
+
+      <h3 class="sol-group">In print</h3>
+      <div class="sols">
+        ${sol({ tag: 'Classifieds', title: 'Sell it. Find it. Say it.', copy: 'Word or boxed ads for sales, services and notices. Simple, fast, read all week.', price: true })}
+        ${sol({ tag: 'Recruitment', title: 'Hire locally.', copy: 'Your vacancy in the paper and on Job Watch online, in front of Clare&rsquo;s workforce.' })}
+        ${sol({ tag: 'Planning notices', title: 'Notices, done right.', copy: 'Planning and public notices, set to format and published on time.', price: true })}
+        ${sol({ tag: 'Inserts', title: 'Your leaflet, in their hands.', copy: 'Flyers, brochures and menus delivered inside the paper.' })}
+        ${sol({ tag: 'Supplements', title: 'Features readers keep.', copy: 'Themed pull-outs built around your sector &mdash; with space to tell your story.', cls: 'sol--wide',
+          extra: `<div class="ad-covers">
+            ${adCover('Weddings', 'rose')}
+            ${adCover('Farming', 'green')}
+            ${adCover('Back to School', 'blue')}
+            ${adCover('Christmas', 'red')}
+          </div>
+          <p class="sol-note">${tbc('Sample covers')} Replace with photographs of real supplements.</p>` })}
+      </div>
+
+      <h3 class="sol-group">Online</h3>
+      <div class="sols">
+        ${sol({ tag: 'Website', title: 'Display that gets clicked.', copy: 'Leaderboards, MPUs and billboards across clareecho.ie, on every device.', cls: 'sol--half' })}
+        ${sol({ tag: 'Sponsored articles', title: 'Your story, read as news.', copy: 'Written with our team, clearly labelled, and guaranteed 1,000+ page views.', cls: 'sol--half' })}
+      </div>
+
+      <div class="build">
+        <div class="build-copy">
+          <p class="kicker kicker--paper">Build your campaign</p>
+          <h3>Not sure where to start?</h3>
+          <p>Tell us what you want to achieve. We&rsquo;ll build the campaign around you &mdash; and your dedicated account manager will tailor every detail.</p>
+        </div>
+        <div class="build-side">
+          <p class="build-label">Whatever the goal</p>
+          <ul class="build-goals">
+            ${AD_GOALS.map(g => `<li>${ico.check}${g}</li>`).join('\n            ')}
+          </ul>
+          <a class="btn btn--paper btn--lg" href="#enquire">Start your campaign${ico.arrow}</a>
+        </div>
       </div>
     </div>
   </section>
 
-  <section class="band band--tight">
-    <div class="wrap sec-split">
-      <div>
-        <div class="sec-head"><h2>Contact us</h2></div>
-        <form class="adv-form" id="adv-form" novalidate>
-          <div><label for="ad-name">Name</label><input id="ad-name" name="name" type="text" autocomplete="name" required></div>
-          <div><label for="ad-email">Email</label><input id="ad-email" name="email" type="email" autocomplete="email" required></div>
-          <div><label for="ad-phone">Phone</label><input id="ad-phone" name="phone" type="tel" autocomplete="tel"></div>
-          <div><label for="ad-dept">Department</label>
-            <select id="ad-dept" name="department">
-              <option>Advertising &mdash; print</option>
-              <option>Advertising &mdash; online</option>
-              <option>Sponsored content</option>
-              <option>Job Watch</option>
-              <option>Something else</option>
-            </select>
-          </div>
-          <div class="full"><label for="ad-msg">Message</label><textarea id="ad-msg" name="message"></textarea></div>
-          <div class="full"><button class="btn btn--primary" type="submit">Send${ico.arrow}</button></div>
-        </form>
-        <p class="adv-ok" id="adv-ok">${ico.check}<span>Thanks &mdash; one of the team will come back to you.</span></p>
-      </div>
+  <!-- 5. Design, deadlines & specs -->
+  <section class="band band--wash ad-sec" id="specs">
+    <div class="wrap">
+      ${adSecHead('04', 'Design, deadlines &amp; specs', 'Everything you need to book with confidence.')}
+      <div class="specs">
+        <article class="spec-card spec-card--design">
+          <span class="why-ico">${adIco.pen}</span>
+          <h3>Design service</h3>
+          <p>No artwork? Our in-house team designs your ad for print and web.</p>
+          <a class="spec-link" href="#" aria-disabled="true">${adIco.spark}<span>How we use AI to speed up design</span>${tbc('Link to come')}</a>
+          <a class="btn btn--ghost" href="#" aria-disabled="true">${adIco.down}Media pack (PDF) ${tbc('To come')}</a>
+        </article>
 
-      <aside>
-        <div class="adv-office">
-          <h3>Pop into the office</h3>
-          <address>
-            The Clare Echo<br>
-            Unit 9, Clare Road Mall<br>
-            Clare Road, Ennis<br>
-            Co. Clare, V95 AK7P
-          </address>
-          <a href="tel:+353851488435">+353 85 148 8435</a>
-          <a href="mailto:ross@clareecho.ie">ross@clareecho.ie</a>
-        </div>
-        <div class="adslot" style="margin-top:20px">
-          <span>Advertisement</span>
-          <div class="adslot-box"><b>MPU slot</b><em>300 &times; 250</em></div>
-        </div>
-      </aside>
+        <article class="spec-card">
+          <h3>Deadlines</h3>
+          <p>The paper is out every Thursday.</p>
+          <table class="spec-table">
+            <thead><tr><th scope="col">Booking</th><th scope="col">Book by</th><th scope="col">Artwork by</th></tr></thead>
+            <tbody>
+              <tr><th scope="row">Display</th><td>${tbc()}</td><td>${tbc()}</td></tr>
+              <tr><th scope="row">Classifieds</th><td>${tbc()}</td><td>${tbc()}</td></tr>
+              <tr><th scope="row">Planning notices</th><td>${tbc()}</td><td>&mdash;</td></tr>
+              <tr><th scope="row">Inserts</th><td>${tbc()}</td><td>${tbc()}</td></tr>
+              <tr><th scope="row">Online</th><td colspan="2">${tbc()}</td></tr>
+            </tbody>
+          </table>
+        </article>
+
+        <article class="spec-card spec-card--wide">
+          <div class="spec-cols">
+            <div>
+              <h3>Print sizes</h3>
+              <p>Supplied to the millimetre: <b>PDF/X-1a, CMYK, fonts embedded</b>, images 200&nbsp;dpi or better.</p>
+              <table class="spec-table spec-table--sizes">
+                <thead><tr><th scope="col">Size</th><th scope="col">W &times; H (mm)</th></tr></thead>
+                <tbody>
+                  ${AD_PRINT.map(s => `<tr><th scope="row"><span class="mini" aria-hidden="true"><i style="${adBox(s)}"></i></span>${s.name.replace(' — ', ' &mdash; ')}</th><td>${s.w} &times; ${s.h}</td></tr>`).join('\n                  ')}
+                </tbody>
+              </table>
+            </div>
+            <div>
+              <h3>Online sizes</h3>
+              <p>Supplied as <b>JPG, PNG or GIF</b>, with a click-through link.</p>
+              <table class="spec-table">
+                <thead><tr><th scope="col">Format</th><th scope="col">Pixels</th></tr></thead>
+                <tbody>
+                  <tr><th scope="row">Leaderboard</th><td>728 &times; 90</td></tr>
+                  <tr><th scope="row">Billboard</th><td>970 &times; 250</td></tr>
+                  <tr><th scope="row">MPU</th><td>300 &times; 250</td></tr>
+                  <tr><th scope="row">Half page</th><td>300 &times; 600</td></tr>
+                  <tr><th scope="row">Mobile banner</th><td>320 &times; 50</td></tr>
+                </tbody>
+              </table>
+              <p class="spec-foot">Sizes to be confirmed against the current rate card.</p>
+            </div>
+          </div>
+        </article>
+      </div>
     </div>
   </section>
 
-  ${newsletter()}
+  <!-- 6. Team -->
+  <section class="band ad-sec" id="team">
+    <div class="wrap">
+      ${adSecHead('05', 'Meet the team', 'From choosing the right approach to designing your campaign, we&rsquo;re here to help every step of the way.')}
+      <div class="team">
+        ${AD_TEAM.map(p => `<article class="person">
+          <div class="person-pic"><span class="ad-ph-tag">Photo</span><span class="person-init" aria-hidden="true">${esc(initials(p.name))}</span></div>
+          <h3>${esc(p.name)}</h3>
+          <p>${esc(p.role)}</p>
+          <a href="mailto:${p.email}">${adIco.mail}${p.email}</a>
+        </article>`).join('\n        ')}
+        <article class="person person--office">
+          <div class="office-pic">${adIco.pinS}</div>
+          <h3>Call in</h3>
+          <address>Unit 9, Clare Road Mall<br>Clare Road, Ennis<br>Co. Clare, V95 AK7P</address>
+          <a href="${AD_PHONE.href}">${adIco.phone}${AD_PHONE.label}</a>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- 7. CTA -->
+  <section class="ad-cta" id="enquire" aria-labelledby="enq-title">
+    <div class="wrap">
+      <div class="ad-cta-grid">
+        <div class="ad-cta-copy">
+          <p class="ad-num">06</p>
+          <h2 id="enq-title">Let&rsquo;s get you seen.</h2>
+          <p>Tell us your goal. We&rsquo;ll come back with a plan.</p>
+          <ul class="ad-direct">
+            <li><a href="${AD_PHONE.href}">${adIco.phone}${AD_PHONE.label}</a></li>
+            <li><a href="mailto:ross@clareecho.ie">${adIco.mail}ross@clareecho.ie</a></li>
+          </ul>
+        </div>
+
+        <div class="ad-form-card">
+          <form class="ad-form" id="adv-form" novalidate>
+            <div><label for="ad-name">Name</label><input id="ad-name" name="name" type="text" autocomplete="name" required></div>
+            <div><label for="ad-biz">Business</label><input id="ad-biz" name="business" type="text" autocomplete="organization"></div>
+            <div><label for="ad-email">Email</label><input id="ad-email" name="email" type="email" autocomplete="email" required></div>
+            <div><label for="ad-phone">Phone</label><input id="ad-phone" name="phone" type="tel" autocomplete="tel"></div>
+            <fieldset class="full">
+              <legend>I&rsquo;m interested in</legend>
+              <div class="chips">
+                ${AD_INTERESTS.map(t => `<label><input type="checkbox" name="interest" value="${t}"><span>${t}</span></label>`).join('\n                ')}
+              </div>
+            </fieldset>
+            <div class="full"><label for="ad-msg">Your goal <span class="opt">(optional)</span></label><textarea id="ad-msg" name="message" rows="3" placeholder="e.g. Launching a new shop in Ennis in March"></textarea></div>
+            <div class="full"><button class="btn btn--primary btn--lg btn--block" type="submit">Send enquiry${ico.arrow}</button></div>
+          </form>
+          <p class="adv-ok" id="adv-ok" role="status">${ico.check}<span>Thanks &mdash; your account manager will be in touch.</span></p>
+        </div>
+      </div>
+    </div>
+  </section>
 </main>
 
 ${footer()}
