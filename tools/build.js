@@ -1493,12 +1493,22 @@ const AD_TEAM = [
 ];
 const AD_PHONE = { href: 'tel:+353851488435', label: '085 148 8435' };
 
+/* Readership. The page views and print run are the Echo's own; readers per
+   copy is the usual estimate for a local weekly and should be replaced with
+   a survey figure if the Echo has one. Monthly readership counts reads, not
+   unique people: every copy read plus every page viewed. */
+const AD_READ = { papersWeek: 13500, pageviewsMonth: 465000, perCopy: 2.5 };
+AD_READ.papersMonth = Math.round(AD_READ.papersWeek * 52 / 12);           // 58,500
+AD_READ.printReads = Math.round(AD_READ.papersMonth * AD_READ.perCopy);   // 146,250
+AD_READ.total = AD_READ.printReads + AD_READ.pageviewsMonth;              // 611,250
+const fmt = n => n.toLocaleString('en-IE');
+const floorTo = (n, step) => Math.floor(n / step) * step;
 const AD_STATS = [
-  ['13,500+', 'papers every Thursday'],
-  ['100,000+', 'people reached weekly'],
-  ['100,000+', 'page views a week'],
-  ['0.4%', 'average click-through']
+  [fmt(floorTo(AD_READ.total, 10000)) + '+', 'monthly readership, print + online'],
+  [fmt(floorTo(AD_READ.pageviewsMonth, 1000)) + '+', 'page views a month'],
+  [fmt(AD_READ.papersWeek) + '+', 'papers every week']
 ];
+const AD_VIDEO = 'CRpxBfwrd2E';
 
 const AD_WHY = [
   ['pin', 'Local expertise', 'In Ennis since 2018. We know Clare inside out.'],
@@ -1643,7 +1653,7 @@ function buildAdvertise() {
 
   return head({
     title: 'Advertise with us — The Clare Echo',
-    desc: "Reach all of Clare. 13,500 papers every Thursday and 100,000+ page views a week. Print and online advertising, designed and planned by one local team.",
+    desc: "Reach all of Clare. 13,500 papers every Thursday and ${fmt(AD_READ.pageviewsMonth)}+ page views a month. Print and online advertising, designed and planned by one local team.",
     css: ['advertise']
   }) + `
 ${siteHeader('')}
@@ -1663,17 +1673,21 @@ ${siteHeader('')}
             <a class="btn btn--ghost btn--lg" href="${AD_PHONE.href}">${adIco.phone}Call ${AD_PHONE.label}</a>
           </div>
         </div>
-        <!-- Swap for the showreel: a <video> or YouTube embed at 16:9 drops straight in. -->
-        <div class="ad-video">
-          <span class="ad-ph-tag">Placeholder</span>
+        <!-- A YouTube Short, so the frame is 9:16. It is a plain link to YouTube
+             until main.js swaps in the player on click; nothing loads from
+             YouTube's player until someone asks for it. The poster comes from
+             i.ytimg — replace with a local copy once one is saved. -->
+        <a class="ad-video" href="https://www.youtube.com/shorts/${AD_VIDEO}" target="_blank" rel="noopener" data-yt="${AD_VIDEO}" aria-label="Play video: Advertise with The Clare Echo">
+          <img src="https://i.ytimg.com/vi/${AD_VIDEO}/oardefault.jpg" alt="" decoding="async" onerror="if(this.src.indexOf('oardefault')>0){this.src=this.src.replace('oardefault','hqdefault')}else{this.remove()}">
           <span class="ad-video-play">${ico.play}</span>
-          <span class="ad-video-cap"><b>New video</b>Why Clare advertises with the Echo &middot; 60s</span>
-        </div>
+          <span class="ad-video-cap"><b>Watch</b>Advertise with The Clare Echo</span>
+        </a>
       </div>
 
       <dl class="ad-stats">
         ${AD_STATS.map(([n, l]) => `<div><dt>${l}</dt><dd>${n}</dd></div>`).join('\n        ')}
       </dl>
+      <p class="ad-stats-note">Readership: ${fmt(AD_READ.papersMonth)} papers a month at ${AD_READ.perCopy} readers per copy, plus monthly page views.</p>
     </div>
   </section>
 
@@ -1699,15 +1713,15 @@ ${siteHeader('')}
           <p class="aud-tag">In print</p>
           <p class="aud-big">13,500+<span>copies every Thursday</span></p>
           <p class="aud-copy">On shelves across the county and kept all week.</p>
-          <ul class="aud-towns" aria-label="Where it is read">
-            ${['Ennis', 'Shannon', 'Kilrush', 'Ennistymon', 'Scariff', 'Kilkee', 'Sixmilebridge', 'Gort'].map(t => `<li>${t}</li>`).join('')}
-            <li class="more">+ every parish between</li>
+          <ul class="aud-facts">
+            <li>${ico.check}<span><b>${fmt(AD_READ.papersMonth)}</b> papers a month</span></li>
+            <li>${ico.check}<span><b>${fmt(floorTo(AD_READ.printReads, 1000))}+</b> monthly print readership</span></li>
           </ul>
           ${adPh('Distribution map of Clare', 'ad-ph--map')}
         </article>
         <article class="aud-card">
           <p class="aud-tag">Online</p>
-          <p class="aud-big">100,000+<span>page views a week</span></p>
+          <p class="aud-big">${fmt(floorTo(AD_READ.pageviewsMonth, 1000))}+<span>page views a month</span></p>
           <p class="aud-copy">Clare&rsquo;s most-read news site, on desktop, mobile and tablet.</p>
           <ul class="aud-facts">
             <li>${ico.check}<span><b>1,000+</b> guaranteed views per advert or article</span></li>

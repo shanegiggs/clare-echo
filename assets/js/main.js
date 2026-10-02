@@ -290,6 +290,26 @@
     });
   })();
 
+  /* ---------- advertise: video plays in place ----------
+     The frame is a link to YouTube; with JS it swaps in the player instead. */
+  (function () {
+    var el = $('.ad-video[data-yt]');
+    if (!el) return;
+    el.addEventListener('click', function (e) {
+      e.preventDefault();
+      var f = document.createElement('iframe');
+      f.src = 'https://www.youtube-nocookie.com/embed/' + el.dataset.yt + '?autoplay=1&playsinline=1&rel=0';
+      f.title = 'Advertise with The Clare Echo';
+      f.allow = 'autoplay; encrypted-media; picture-in-picture; fullscreen';
+      f.allowFullscreen = true;
+      // an iframe cannot live inside a link, so the link gives way to a frame
+      var box = document.createElement('div');
+      box.className = 'ad-video';
+      box.appendChild(f);
+      el.parentNode.replaceChild(box, el);
+    });
+  })();
+
   /* ---------- advertise: planner size list ----------
      On narrow screens the list becomes a sideways rail; start it on the
      size that is lit rather than leaving it off-screen. */
